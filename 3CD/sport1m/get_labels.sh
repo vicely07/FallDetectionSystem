@@ -9,5 +9,5 @@ wget \
   https://raw.githubusercontent.com/gtoderici/sports-1m-dataset/master/labels.txt \
   --directory-prefix=${DIR}
 
-echo ---------------------------------------------
+echo ----------------------------------------------
 echo Done!
