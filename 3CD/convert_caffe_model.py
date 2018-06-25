@@ -5,7 +5,7 @@ Created on Wed Jun 20 11:25:11 2018
 @author: lykha
 """
 
-from FallDetectionSystem import c3d_model
+import c3d_model
 
 import caffe_pb2 as caffe
 
