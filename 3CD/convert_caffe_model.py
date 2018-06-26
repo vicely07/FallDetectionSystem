@@ -107,7 +107,7 @@ def main():
 
     # input caffe model
 
-    caffe_model_filename = './models/conv3d_deepnetA_sport1m_iter_1900000'
+    caffe_model_filename = 'conv3d_deepnetA_sport1m_iter_1900000'
 
 
 
@@ -157,7 +157,27 @@ def main():
 
             continue
 
-        print ("[Info] Massaging \"{}\" layer...".format(layer.name))
+        print ("[Info] Massaging 
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               "{}\" layer...".format(layer.name))
 
         weights_b = np.array(layer.blobs[1].data, dtype=np.float32)
 
