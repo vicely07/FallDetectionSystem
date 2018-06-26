@@ -11,7 +11,7 @@ echo Unpacking mean cube...
 cd ~/FallDetectionSystem/3CD/data
 cp train01_16_128_171_mean.npy.bz2 models models
 bunzip2 train01_16_128_171_mean.npy.bz2
-cd ~
+cd ~/FallDetectionSystem/3CD
 
 echo ---------------------------------------------
 echo Done!
