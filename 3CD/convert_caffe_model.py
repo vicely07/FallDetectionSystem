@@ -157,27 +157,7 @@ def main():
 
             continue
 
-        print ("[Info] Massaging 
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               "{}\" layer...".format(layer.name))
+        print ('[Info] Massaging "{}\" layer...'.format(layer.name))
 
         weights_b = np.array(layer.blobs[1].data, dtype=np.float32)
 
