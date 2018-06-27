@@ -4,7 +4,7 @@ Created on Wed Jun 27 15:43:51 2018
 
 @author: lykha
 """
-import C3D_model
+from C3D_model import model
 import caffe_pb2 as caffe
 import numpy as np
 
