@@ -4,7 +4,7 @@ Created on Wed Jun 27 15:43:51 2018
 
 @author: lykha
 """
-import 3CD_model.py
+import 3CD_model
 import caffe_pb2 as caffe
 import numpy as np
 
