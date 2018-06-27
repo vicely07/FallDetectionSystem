@@ -31,13 +31,7 @@ for i in conv_layers_indx:
     )
     weights_p = rot90(weights_p)
     params.append([weights_p, weights_b])
-for i in fc_layers_indx:
-    layer = p.layers[i]
-    weights_b = np.array(layer.blobs[1].data, dtype=np.float32)
-    weights_p = np.array(layer.blobs[0].data, dtype=np.float32).reshape(
-        layer.blobs[0].num, layer.blobs[0].channels, layer.blobs[0].length,
-        layer.blobs[0].height, layer.blobs[0].width)[0,0,0,:,:].T
-    params.append([weights_p, weights_b])
+
 
 model_layers_indx = [0, 2, 4, 5, 7, 8, 10, 11]#conv + fc
 for i, j in zip(model_layers_indx, range(11)):
