@@ -75,7 +75,7 @@ def convert_dense(w):
 
         wi = np.squeeze(w[:,i])
 
-        wo[:,i] = np.transpose(np.reshape(wi, (512,4,4)), (1, 2, 0)).flatten()
+        wo[:,i] = np.transpose(np.reshape(wi, (512,7,7)), (1, 2, 0)).flatten()
 
     return wo
 
@@ -153,7 +153,7 @@ def main():
 
         # skip non-conv/fc layers
 
-        if 'conv' not in layer.name and 'fc' not in layer.name:
+        if 'conv' not in layer.name:
 
             continue
 
@@ -197,7 +197,7 @@ def main():
 
         layer_name = model.layers[layer_indx].name
 
-        if 'conv' in layer_name or 'fc' in layer_name:
+        if 'conv' in layer_name:
 
             #print "[Info] Transplanting \"{}\" layer...".format(layer_name)
 
