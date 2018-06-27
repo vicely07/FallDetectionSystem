@@ -351,7 +351,7 @@ def main():
 
     # subtract mean
 
-    mean_cube = np.load('models/train01_16_128_171_mean.npy')
+    mean_cube = np.load('train01_16_128_171_mean.npy')
 
     mean_cube = np.transpose(mean_cube, (1, 2, 3, 0))
 
