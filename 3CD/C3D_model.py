@@ -15,41 +15,41 @@ def get_model(summary=False):
     """
     model = Sequential()
     # 1st layer group
-    model.add(Convolution3D(64, 3, 3, 3, activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 64, activation='relu', 
                             border_mode='same', name='conv1',
                             subsample=(1, 1, 1), 
-                            input_shape=(16, 112, 112, 3)))
+                            input_shape=(3, 16, 112, 112)))
     model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), 
                            border_mode='valid', name='pool1'))
     # 2nd layer group
-    model.add(Convolution3D(128, 3, 3, 3, activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 128, activation='relu', 
                             border_mode='same', name='conv2',
                             subsample=(1, 1, 1)))
     model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), 
                            border_mode='valid', name='pool2'))
     # 3rd layer group
-    model.add(Convolution3D(256, 3, 3, 3, activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 256, activation='relu', 
                             border_mode='same', name='conv3a',
                             subsample=(1, 1, 1)))
-    model.add(Convolution3D(256, 3, 3, 3, activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 256, activation='relu', 
                             border_mode='same', name='conv3b',
                             subsample=(1, 1, 1)))
     model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), 
                            border_mode='valid', name='pool3'))
     # 4th layer group
-    model.add(Convolution3D(512, 3, 3, 3, activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 512, activation='relu', 
                             border_mode='same', name='conv4a',
                             subsample=(1, 1, 1)))
-    model.add(Convolution3D(512, 3, 3, 3, activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 512 activation='relu', 
                             border_mode='same', name='conv4b',
                             subsample=(1, 1, 1)))
     model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), 
                            border_mode='valid', name='pool4'))
     # 5th layer group
-    model.add(Convolution3D(512, 3, 3, 3, activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 512, activation='relu', 
                             border_mode='same', name='conv5a',
                             subsample=(1, 1, 1)))
-    model.add(Convolution3D(512, 3, 3, 3, activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 512 activation='relu', 
                             border_mode='same', name='conv5b',
                             subsample=(1, 1, 1)))
    
