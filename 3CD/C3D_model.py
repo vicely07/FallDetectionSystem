@@ -40,7 +40,7 @@ def get_model(summary=False):
     model.add(Convolution3D(3, 3, 3, 512, activation='relu', 
                             border_mode='same', name='conv4a',
                             subsample=(1, 1, 1)))
-    model.add(Convolution3D(3, 3, 3, 512 activation='relu', 
+    model.add(Convolution3D(3, 3, 3, 512, activation='relu', 
                             border_mode='same', name='conv4b',
                             subsample=(1, 1, 1)))
     model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), 
