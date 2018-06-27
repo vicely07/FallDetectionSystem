@@ -8,7 +8,7 @@ wget -N --content-disposition http://vlg.cs.dartmouth.edu/c3d/conv3d_deepnetA_sp
 
 echo ---------------------------------------------
 echo Unpacking mean cube...
-cp train01_16_128_171_mean.npy.bz2 models models
+cp train01_16_128_171_mean.npy.bz2 models 
 bunzip2 train01_16_128_171_mean.npy.bz2
 
 echo ---------------------------------------------
