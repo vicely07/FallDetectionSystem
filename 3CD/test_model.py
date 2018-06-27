@@ -23,7 +23,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-from FallDetectionSystem import c3d_model
+import c3d_model
 
 import sys
 
