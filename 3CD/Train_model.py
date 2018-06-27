@@ -4,7 +4,7 @@ Created on Wed Jun 27 15:43:51 2018
 
 @author: lykha
 """
-
+import 3CD_model
 import caffe_pb2 as caffe
 import numpy as np
 
@@ -44,4 +44,4 @@ json_string = model.to_json()
 with open('sports1M_model.json', 'w') as f:
     f.write(json_string)
 
-from keras.models import model_from_json
+
