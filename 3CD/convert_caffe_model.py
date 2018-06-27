@@ -187,18 +187,6 @@ def main():
 
                 weights_p = np.transpose(weights_p, (2, 3, 4, 1, 0))
 
-        elif 'fc' in layer.name:
-
-            weights_p = weights_p[0, 0, 0, :, :].T
-
-            if 'fc6' in layer.name:
-
-                print("[Info] First FC layer after flattening layer needs "
-
-                      "special care...")
-
-                weights_p = convert_dense(weights_p)
-
         params.append([weights_p, weights_b])
 
 
