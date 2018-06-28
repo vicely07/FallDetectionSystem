@@ -49,7 +49,7 @@ def get_model(summary=False):
     model.add(Convolution3D(512, 3, 3, 3, activation='relu', 
                             border_mode='same', name='conv5a',
                             subsample=(1, 1, 1)))
-    model.add(Convolution3D(512, 3, 3, activation='relu', 
+    model.add(Convolution3D(512, 3, 3, 3, activation='relu', 
                             border_mode='same', name='conv5b',
                             subsample=(1, 1, 1)))
    
