@@ -11,7 +11,7 @@ model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
 model.compile(loss='mean_squared_error', optimizer='sgd')
 
-with open('dataset/labels.txt', 'r') as f:
+with open('labels.txt', 'r') as f:
     labels = [line.strip() for line in f.readlines()]
 print('Total labels: {}'.format(len(labels)))
 
