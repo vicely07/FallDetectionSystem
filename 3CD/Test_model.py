@@ -6,6 +6,7 @@ Created on Wed Jun 27 15:44:57 2018
 """
 
 from keras.models import model_from_json
+from Train_model import model
 
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
