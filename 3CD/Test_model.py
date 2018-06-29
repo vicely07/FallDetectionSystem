@@ -34,6 +34,6 @@ X = frames.transpose((3, 0, 1, 2))
 output = model.predict_on_batch(np.array([X]))
 
 
-print('Position of maximum probability: {}'.format(str(output[0].argmax())))
-print('Maximum probability: {:.5f}'.format(str(max(output[0][0]))))
+print('Position of maximum probability: {}'.format(output[0].argmax()))
+print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(str(labels[output[0].argmax()])))
