@@ -4,7 +4,8 @@ Created on Wed Jun 27 15:44:57 2018
 
 @author: lykha
 """
-
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 from keras.models import model_from_json
 from Train_model import model
 
