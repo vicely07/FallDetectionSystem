@@ -33,7 +33,8 @@ vid = np.array(vid, dtype=np.float32)
 frames = vid[2000:2016, 8:120, 30:142,: ]
 X = frames.transpose((3, 0, 1, 2))
 output = model.predict_on_batch(np.array([X]))
-
+print(max(output[0][0]))
+print(labels[output[0].argmax()])
 print('Position of maximum probability: {0}'.format(output[0].argmax()))
 print('Maximum probability: {0:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {0}'.format(labels[output[0].argmax()]))
