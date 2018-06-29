@@ -35,5 +35,5 @@ output = model.predict_on_batch(np.array([X]))
 
 
 print('Position of maximum probability: {}'.format(output[0].argmax()))
-print('Maximum probability: {:.{5}f}'.format(max(output[0][0])))
+print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(str(labels[output[0].argmax()])))
