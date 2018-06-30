@@ -132,16 +132,9 @@ while True:
     vid.append(cv2.resize(img, (171, 128)))
 vid = np.array(vid, dtype=np.float32)
 
-import matplotlib.pyplot as plt
-%matplotlib inline
-
-plt.imshow(vid[2000]/256)
-
 X = vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2))
 output = model.predict_on_batch(np.array([X]))
 
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0])))
 print('Corresponding label: {}'.format(labels[output[0].argmax()]))
-
-plt.plot(output[0][0])
