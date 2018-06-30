@@ -48,7 +48,7 @@ def get_model(summary=False):
     model.add(ZeroPadding3D(padding=(0, 1, 1)))
     model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), 
                            border_mode='valid', name='pool5'))
-
+    model.add(Flatten())
     if summary:
         print(model.summary())
     return model
