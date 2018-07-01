@@ -122,7 +122,7 @@ print('Total labels: {}'.format(len(labels)))
 import cv2
 import numpy as np
 
-cap = cv2.VideoCapture('dM06AMFLsrc.mp4')
+cap = cv2.VideoCapture('TNdT1Ry0ZBk.mp4')
 
 vid = []
 while True:
