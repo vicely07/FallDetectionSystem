@@ -1,0 +1,14 @@
+from keras.models import model_from_json
+
+model = model_from_json(open('sports1M_model.json', 'r').read())
+model.load_weights('sports1M_weights.h5')
+model.compile(loss='mean_squared_error', optimizer='sgd')
+
+net = tf.keras.models.Sequential() 
+net.add(tf.keras.layers.LSTM(2048, 
+          return_sequences=False,           
+          input_shape=input_shape,             
+          dropout=0.5)) 
+net.add(tf.keras.layers.Dense(512, activation='relu')) 
+net.add(tf.keras.layers.Dropout(0.5)) 
+net.add(tf.keras.layers.Dense(no_classes, activation='softmax')) 
