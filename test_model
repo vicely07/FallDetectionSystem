@@ -1,0 +1,18 @@
+from keras.models import model_from_json
+
+model = model_from_json(open('sports1M_model.json', 'r').read())
+
+model.load_weights('sports1M_weights.h5')
+
+model.compile(loss='mean_squared_error', optimizer='sgd')
+
+model.add(main())
+
+model.add(tf.keras.layers.Dense(512, activation='relu')) 
+
+model.add(tf.keras.layers.Dropout(0.5)) 
+
+model.add(tf.keras.layers.Dense(no_classes, activation='softmax')) 
+
+print(model)
+
