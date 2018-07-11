@@ -15,7 +15,7 @@ model.add(keras.layers.LSTM(2048,
 model.add(keras.layers.Dense(512, activation='relu')) 
 model.add(keras.layers.Dropout(0.5)) 
 model.add(keras.layers.Dense(no_classes, activation='softmax')) 
-print(model)
+print(model.summary())
 
 
 
