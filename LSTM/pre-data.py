@@ -112,21 +112,22 @@ def mix_up(x, y, z):
 
 
 def main():
-    video_path = '/home/jingwei/Action Detection/video-ucla-website/'
-    data_path = '/home/jingwei/Action Detection/A-R/data/'
-    folders = ['a01', 'a02', 'a03', 'a04', 'a05', 'a06', 'a08', 'a09', 'a11', 'a12']
+    video_path = '/LSTM/data/image/'
+    data_path = '/LSTM/data/'
+    folders = ['a01', 'a02', 'a03', 'a04', 'a05', 'a06', 'a07', 'a08', 'a09', 'a10', 'a11']
 
     # folder-type to label
-    video_labels_dic = {'a01': 'pick up with one hand',
-                        'a02': 'pick up with two hands',
-                        'a03': 'drop trash',
-                        'a04': 'walk around',
-                        'a05': 'sit down',
-                        'a06': 'stand up',
-                        'a08': 'donning',
-                        'a09': 'doffing',
-                        'a11': 'throw',
-                        'a12': 'carry'}
+    video_labels_dic = {'a01': 'biking',
+                        'a02': 'diving',
+                        'a03': 'golf',
+                        'a04': 'juggle',
+                        'a05': 'jumping',
+                        'a06': 'riding',
+                        'a07': 'shooting',
+                        'a08': 'spiking',
+                        'a09': 'swing',
+                        'a10': 'tennis'
+                        'a11': 'walk dog'}
     for type in folders:
         cur_video_path = video_path + type + '/'
         cur_image_path = data_path + 'image/' + type + '/'
@@ -174,8 +175,8 @@ def main():
     seprate_data(folders, data_path + '/image/', data_path + '/data_set/')
 
     # label to idx dictionary
-    label_to_idx = {'pick up with one hand': 1, 'pick up with two hands': 2, 'drop trash': 3, 'walk around': 4,
-                    'sit down': 5, 'stand up': 6, 'donning': 7, 'doffing': 8, 'throw': 9, 'carry': 0}
+    label_to_idx = {'biking': 0, 'diving': 1, 'golf': 2, 'juggle': 3,
+                    'jumping': 4, 'riding': 5, 'shooting': 6, 'spiking': 7, 'swing': 8, 'tennis': 9, 'walk dog': 10}
     save_pickle(label_to_idx, data_path + '/data_set/label_to_idx.pkl')
 
 
