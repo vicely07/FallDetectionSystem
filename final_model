@@ -3,12 +3,28 @@ from keras.models import model_from_json
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
 model.compile(loss='mean_squared_error', optimizer='sgd')
-
-net = tf.keras.models.Sequential() 
-net.add(tf.keras.layers.LSTM(2048, 
+model.add(tf.keras.layers.LSTM(2048, 
           return_sequences=False,           
           input_shape=input_shape,             
           dropout=0.5)) 
-net.add(tf.keras.layers.Dense(512, activation='relu')) 
-net.add(tf.keras.layers.Dropout(0.5)) 
-net.add(tf.keras.layers.Dense(no_classes, activation='softmax')) 
+model.add(tf.keras.layers.Dense(512, activation='relu')) 
+model.add(tf.keras.layers.Dropout(0.5)) 
+model.add(tf.keras.layers.Dense(no_classes, activation='softmax')) 
+return model
+
+model = get_model(summary=True)
+import cv2
+import numpy as np
+
+cap = cv2.VideoCapture('dM06AMFLsrc.mp4')
+
+vid = []
+while True:
+    ret, img = cap.read()
+    if not ret:
+        break
+    vid.append(cv2.resize(img, (171, 128)))
+vid = np.array(vid, dtype=np.float32)
+
+X = vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2))
+output = model.predict_on_batch(np.array([X]))
