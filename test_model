@@ -1,114 +1,4 @@
-import keras.backend as K
 
-import numpy as np
-
-
-
-
-
-def get_activations(model, inputs, print_shape_only=False, layer_name=None):
-
-    # Documentation is available online on Github at the address below.
-
-    # From: https://github.com/philipperemy/keras-visualize-activations
-
-    print('----- activations -----')
-
-    activations = []
-
-    inp = model.input
-
-    if layer_name is None:
-
-        outputs = [layer.output for layer in model.layers]
-
-    else:
-
-        outputs = [layer.output for layer in model.layers if layer.name == layer_name]  # all layer outputs
-
-    funcs = [K.function([inp] + [K.learning_phase()], [out]) for out in outputs]  # evaluation functions
-
-    layer_outputs = [func([inputs, 1.])[0] for func in funcs]
-
-    for layer_activations in layer_outputs:
-
-        activations.append(layer_activations)
-
-        if print_shape_only:
-
-            print(layer_activations.shape)
-
-        else:
-
-            print(layer_activations)
-
-    return activations
-
-
-
-
-
-def get_data(n, input_dim, attention_column=1):
-
-    """
-
-    Data generation. x is purely random except that it's first value equals the target y.
-
-    In practice, the network should learn that the target = x[attention_column].
-
-    Therefore, most of its attention should be focused on the value addressed by attention_column.
-
-    :param n: the number of samples to retrieve.
-
-    :param input_dim: the number of dimensions of each element in the series.
-
-    :param attention_column: the column linked to the target. Everything else is purely random.
-
-    :return: x: model inputs, y: model targets
-
-    """
-
-    x = np.random.standard_normal(size=(n, input_dim))
-
-    y = np.random.randint(low=0, high=2, size=(n, 1))
-
-    x[:, attention_column] = y[:, 0]
-
-    return x, y
-
-
-
-
-
-def get_data_recurrent(n, time_steps, input_dim, attention_column=10):
-
-    """
-
-    Data generation. x is purely random except that it's first value equals the target y.
-
-    In practice, the network should learn that the target = x[attention_column].
-
-    Therefore, most of its attention should be focused on the value addressed by attention_column.
-
-    :param n: the number of samples to retrieve.
-
-    :param time_steps: the number of time steps of your series.
-
-    :param input_dim: the number of dimensions of each element in the series.
-
-    :param attention_column: the column linked to the target. Everything else is purely random.
-
-    :return: x: model inputs, y: model targets
-
-    """
-
-    x = np.random.standard_normal(size=(n, time_steps, input_dim))
-
-    y = np.random.randint(low=0, high=2, size=(n, 1))
-
-    x[:, attention_column, :] = np.tile(y[:], (1, input_dim))
-
-    return x, y
 #------------------------------------------lstm attention model-------------------------------------------------------
 from keras.layers import merge
 
@@ -117,10 +7,6 @@ from keras.layers.core import *
 from keras.layers.recurrent import LSTM
 
 from keras.models import *
-
-
-
-from attention_utils import get_activations, get_data_recurrent
 
 
 
@@ -163,38 +49,13 @@ def attention_3d_block(inputs):
     return output_attention_mul
 
 
-
-
-
-def model_attention_applied_after_lstm():
-
-    inputs = input(shape=(TIME_STEPS, INPUT_DIM,))
-
-    lstm_units = 32
-
-    lstm_out = LSTM(lstm_units, return_sequences=True)(inputs)
-
-    attention_mul = attention_3d_block(lstm_out)
-
-    attention_mul = Flatten()(attention_mul)
-
-    output = Dense(1, activation='sigmoid')(attention_mul)
-
-    model = Model(input=[inputs], output=output)
-
-    return model
-
-
-
-
-
 def model_attention_applied_before_lstm():
 
     inputs = input(shape=(TIME_STEPS, INPUT_DIM,))
 
     attention_mul = attention_3d_block(inputs)
 
-    lstm_units = 32
+    lstm_units = 24
 
     attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
 
@@ -205,65 +66,6 @@ def model_attention_applied_before_lstm():
     return model
 
 
-
-
-
-if __name__ == '__main__':
-
-
-
-    N = 300000
-
-    # N = 300 -> too few = no training
-
-    inputs_1, outputs = get_data_recurrent(N, TIME_STEPS, INPUT_DIM)
-
-
-
-    if APPLY_ATTENTION_BEFORE_LSTM:
-
-        m = model_attention_applied_before_lstm()
-
-    else:
-
-        m = model_attention_applied_after_lstm()
-
-
-
-    m.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-
-    print(m.summary())
-
-
-
-    m.fit([inputs_1], outputs, epochs=1, batch_size=64, validation_split=0.1)
-
-
-
-    attention_vectors = []
-
-    for i in range(300):
-
-        testing_inputs_1, testing_outputs = get_data_recurrent(1, TIME_STEPS, INPUT_DIM)
-
-        attention_vector = np.mean(get_activations(m,
-
-                                                   testing_inputs_1,
-
-                                                   print_shape_only=True,
-
-                                                   layer_name='attention_vec')[0], axis=2).squeeze()
-
-        print('attention =', attention_vector)
-
-        assert (np.sum(attention_vector) - 1.0) < 1e-5
-
-        attention_vectors.append(attention_vector)
-
-
-
-    attention_vector_final = np.mean(np.array(attention_vectors), axis=0)
-
 #---------------------------------------------model---------------------------------------------------------------
 
 from keras.models import model_from_json
@@ -273,19 +75,13 @@ model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
 
 model.compile(loss='mean_squared_error', optimizer='sgd')
+model.add(attention_3d_block(model))
+model.add(model_attention_applied_before_lstm())
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.add(Dropout(0.5))
+model.add(Dense(11, activation='softmax'))
 
-model.add(model_attention_applied_before_lstm(
-    inputs = Input(shape=(512, 1, 7, 7)),
-    LSTM_units = 24))
-    
-m.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-
-model.add(tf.keras.layers.Dense(512, activation='relu')) 
-
-model.add(tf.keras.layers.Dropout(0.5)) 
-
-model.add(tf.keras.layers.Dense(no_classes, activation='softmax')) 
-
+print(model.summary())
 
 
 
