@@ -1,0 +1,99 @@
+import numpy
+
+train_d = numpy.load('train_data.npy')
+
+train_l = numpy.load('train_label.npy')
+
+test_d = numpy.load('test_data.npy')
+
+test_l = numpy.load('test_label.npy')
+'''
+import matplotlib.pyplot as plt
+
+def plot_history(history):
+    plt.plot(history.history['acc'], marker='.')
+    plt.plot(history.history['val_acc'], marker='.')
+    plt.title('model accuracy')
+    plt.xlabel('epoch')
+    plt.ylabel('accuracy')
+    plt.grid()
+    plt.legend(['acc', 'val_acc'], loc='lower right')
+    plt.show()
+    plt.savefig('model_accuracy.png')
+    plt.close()
+
+    plt.plot(history.history['loss'], marker='.')
+    plt.plot(history.history['val_loss'], marker='.')
+    plt.title('model loss')
+    plt.xlabel('epoch')
+    plt.ylabel('loss')
+    plt.grid()
+    plt.legend(['loss', 'val_loss'], loc='upper right')
+    plt.show()
+    plt.savefig('model_loss.png')
+    plt.close()
+
+def save_history(history):
+    loss = history.history['loss']
+    acc = history.history['acc']
+    val_loss = history.history['val_loss']
+    val_acc = history.history['val_acc']
+    nb_epoch = len(acc)
+
+    with open('result.txt', 'w') as fp:
+        fp.write('epoch\tloss\tacc\tval_loss\tval_acc\n')
+        for i in range(nb_epoch):
+            fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
+                i, loss[i], acc[i], val_loss[i], val_acc[i]))
+
+from keras.layers import (Activation, Conv3D, Dense, Dropout, Flatten,
+                          MaxPooling3D)
+from keras.layers.advanced_activations import LeakyReLU
+from keras.losses import categorical_crossentropy
+from keras.models import Sequential
+from keras.optimizers import Adam
+from keras.utils import np_utils
+from keras.utils.vis_utils import plot_model
+from sklearn.model_selection import train_test_split
+from keras.utils.vis_utils import plot_model
+# Define model
+model = Sequential()
+model.add(Conv3D(128, kernel_size=(3, 3, 3), input_shape=(
+train_d.shape[1:]), border_mode='same'))
+model.add(Activation('relu'))
+model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
+model.add(Activation('softmax'))
+model.add(MaxPooling3D(pool_size=(3, 3, 3), border_mode='same'))
+model.add(Dropout(0.5))
+
+model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
+model.add(Activation('relu'))
+model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
+model.add(Activation('softmax'))
+model.add(MaxPooling3D(pool_size=(3, 3, 3), border_mode='same'))
+model.add(Dropout(0.5))
+
+
+model.add(Flatten())
+model.add(Dense(512, activation='sigmoid'))
+model.add(Dropout(0.5))
+model.add(Dense(11, activation='softmax'))
+
+model.compile(loss=categorical_crossentropy,optimizer=Adam(), metrics=['accuracy'])
+model.summary()
+#plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
+#train_d, train_l, test_d, test_l = train_test_split(X, Y, test_size=0.2, random_state=43)
+
+history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130,epochs=100, verbose=1, shuffle=True)
+plot_history(history)
+save_history(history)
+#model.evaluate(test_d, test_l, verbose=1)
+model_json = model.to_json()
+   
+with open( 'ucf101_3dcnnmodel.json', 'w') as json_file:
+    json_file.write(model_json)
+model.save_weights( 'ucf101_3dcnnmodel.hd5')
+
+loss, acc = model.evaluate(test_d, test_l, verbose=1)
+print('Test loss:', loss)
+print('Test accuracy:', acc)
