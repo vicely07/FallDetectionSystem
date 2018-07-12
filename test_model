@@ -1,4 +1,5 @@
 from keras.models import model_from_json
+from keras-attention-mechanism.attention_lstm.py import model_attention_applied_before_lstm
 
 model = model_from_json(open('sports1M_model.json', 'r').read())
 
