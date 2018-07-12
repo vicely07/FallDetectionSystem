@@ -159,31 +159,6 @@ def attention_3d_block(inputs):
     return output_attention_mul
 
 
-
-
-
-def model_attention_applied_after_lstm():
-
-    inputs = Input(shape=(TIME_STEPS, INPUT_DIM,))
-
-    lstm_units = 32
-
-    lstm_out = LSTM(lstm_units, return_sequences=True)(inputs)
-
-    attention_mul = attention_3d_block(lstm_out)
-
-    attention_mul = Flatten()(attention_mul)
-
-    output = Dense(1, activation='sigmoid')(attention_mul)
-
-    model = Model(input=[inputs], output=output)
-
-    return model
-
-
-
-
-
 def model_attention_applied_before_lstm():
 
     inputs = input(shape=(TIME_STEPS, INPUT_DIM,))
