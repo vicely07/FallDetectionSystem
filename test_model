@@ -120,6 +120,10 @@ from keras.models import *
 
 
 
+from attention_utils import get_activations, get_data_recurrent
+
+
+
 INPUT_DIM = 2
 
 TIME_STEPS = 20
@@ -159,6 +163,31 @@ def attention_3d_block(inputs):
     return output_attention_mul
 
 
+
+
+
+def model_attention_applied_after_lstm():
+
+    inputs = input(shape=(TIME_STEPS, INPUT_DIM,))
+
+    lstm_units = 32
+
+    lstm_out = LSTM(lstm_units, return_sequences=True)(inputs)
+
+    attention_mul = attention_3d_block(lstm_out)
+
+    attention_mul = Flatten()(attention_mul)
+
+    output = Dense(1, activation='sigmoid')(attention_mul)
+
+    model = Model(input=[inputs], output=output)
+
+    return model
+
+
+
+
+
 def model_attention_applied_before_lstm():
 
     inputs = input(shape=(TIME_STEPS, INPUT_DIM,))
@@ -188,6 +217,16 @@ if __name__ == '__main__':
     # N = 300 -> too few = no training
 
     inputs_1, outputs = get_data_recurrent(N, TIME_STEPS, INPUT_DIM)
+
+
+
+    if APPLY_ATTENTION_BEFORE_LSTM:
+
+        m = model_attention_applied_before_lstm()
+
+    else:
+
+        m = model_attention_applied_after_lstm()
 
 
 
@@ -224,6 +263,7 @@ if __name__ == '__main__':
 
 
     attention_vector_final = np.mean(np.array(attention_vectors), axis=0)
+
 #---------------------------------------------model---------------------------------------------------------------
 
 from keras.models import model_from_json
@@ -238,6 +278,8 @@ model.add(model_attention_applied_before_lstm(
     inputs = Input(shape=(512, 1, 7, 7)),
     LSTM_units = 24))
     
+m.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
 model.add(tf.keras.layers.Dense(512, activation='relu')) 
 
 model.add(tf.keras.layers.Dropout(0.5)) 
