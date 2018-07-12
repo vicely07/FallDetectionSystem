@@ -1,0 +1,222 @@
+import os
+import sys
+import argparse
+import csv
+import numpy as np
+import imageio
+imageio.plugins.ffmpeg.download()
+from random import randint
+from PIL import Image
+'''
+1) Download dataset and extract files. It consists of 3 second clips and annotations in XML format
+2) Load main folder in python list with data as path to video and label as category it belongs
+3) Split python list into training and test sets (80-20)
+4) Store the 2 lists in csv files
+'''
+def load_groups(input_folder):
+    '''
+    Loading the list of sub-folders into a python list with their
+    corresponding label.
+    '''
+    groups         = []
+    label_folders  = os.listdir(input_folder)
+    index          = 0
+    for label_folder in sorted(label_folders):
+        label_folder_path = os.path.join(input_folder, label_folder)
+        if os.path.isdir(label_folder_path):
+            group_folders = os.listdir(label_folder_path)
+            for group_folder in group_folders:
+                if group_folder != 'Annotation':
+                    groups.append([os.path.join(label_folder_path, group_folder), index])
+            index += 1
+
+    return groups
+
+def split_data(groups, file_ext):
+    '''
+    Spliting the data at random for train, eval and test set.
+    '''
+    group_count = len(groups)
+    indices = np.arange(group_count)
+
+    np.random.seed(0) # Make it deterministic.
+    np.random.shuffle(indices)
+
+    # 80% training and 20% test.
+    train_count = int(0.8 * group_count)
+    test_count  = group_count - train_count
+
+    train = []
+    test  = []
+
+    for i in range(train_count):
+        group = groups[indices[i]]
+        print("Current category",group)
+        video_files = os.listdir(group[0])
+        for video_file in video_files:
+            video_file_path = os.path.join(group[0], video_file)
+            if os.path.isfile(video_file_path):
+                video_file_path = os.path.abspath(video_file_path)
+                ext = os.path.splitext(video_file_path)[1]
+                if (ext == file_ext):
+                    # make sure we have enough frames and the file isn't corrupt
+                    video_reader = imageio.get_reader(video_file_path, 'ffmpeg')                    
+                    if len(video_reader) >= 16:
+                        train.append([video_file_path, group[1]])
+
+    for i in range(train_count, train_count + test_count):
+        group = groups[indices[i]]
+        video_files = os.listdir(group[0])
+        for video_file in video_files:
+            video_file_path = os.path.join(group[0], video_file)
+            if os.path.isfile(video_file_path):
+                video_file_path = os.path.abspath(video_file_path)
+                ext = os.path.splitext(video_file_path)[1]
+                if (ext == file_ext):
+                    # make sure we have enough frames and the file isn't corrupt
+                    video_reader = imageio.get_reader(video_file_path, 'ffmpeg')
+                    if len(video_reader) >= 16:
+                        test.append([video_file_path, group[1]])
+
+    return train, test
+
+def write_to_csv(items, file_path):
+    '''
+    Writing file path and its target pair in a CSV file format.
+    '''
+    if sys.version_info[0] < 3:
+        with open(file_path, 'wb') as csv_file:
+            writer = csv.writer(csv_file, delimiter=',')
+            for item in items:
+                writer.writerow(item)
+    else:
+        with open(file_path, 'w', newline='') as csv_file:
+            writer = csv.writer(csv_file, delimiter=',')
+            for item in items:
+                writer.writerow(item)
+    print("Done")
+
+groups = load_groups("D:/cognitive/sports/UCF11_updated_mpg")
+train, test = split_data(groups, '.mpg')
+In [6]:
+write_to_csv(train, os.path.join('D:/cognitive/sports/UCF11_DATA', 'train_map.csv'))
+write_to_csv(test, os.path.join('D:/cognitive/sports/UCF11_DATA', 'test_map.csv'))
+
+Done
+Done
+'''
+1) Read video from path in csv, extract frames
+2) Convert frames to numpy arrays and save in file
+3) Upload file to AWS to pass it to model for training
+'''
+def select_features(video_file, sequence_length, is_training,width,height):
+        '''
+        Select a sequence of frames from video_file and return them as
+        a Tensor.
+        '''
+        try:
+            video_reader = imageio.get_reader(video_file, 'ffmpeg')
+            num_frames   = len(video_reader)
+            if sequence_length > num_frames:
+                raise ValueError('Sequence length {} is larger then the total number of frames {} in {}.'.format(sequence_length, num_frames, video_file))
+
+            # select which sequence frames to use.
+            step = 1
+            expanded_sequence = sequence_length
+            if num_frames > 2*sequence_length:
+                step = 2
+                expanded_sequence = 2*sequence_length
+
+            seq_start = int(num_frames/2) - int(expanded_sequence/2)
+            if is_training:
+                seq_start = randint(0, num_frames - expanded_sequence)
+
+            frame_range = [seq_start + step*i for i in range(sequence_length)]            
+            video_frames = []
+            for frame_index in frame_range:
+                video_frames.append(read_frame(video_reader.get_data(frame_index),width,height))
+        
+            return np.stack(video_frames, axis=1)
+        except:
+            print("Error reading video")
+
+def read_frame(data,width,height):
+        '''
+        Based on http://vlg.cs.dartmouth.edu/c3d/c3d_video.pdf
+        We resize the image to 128x171 first, then selecting a 112x112
+        crop.
+        '''
+        try:
+            if (width >= 171) or (height >= 128):
+                raise ValueError("Target width need to be less than 171 and target height need to be less than 128.")
+        
+            image = Image.fromarray(data)
+            image.thumbnail((171, 128), Image.ANTIALIAS)
+        
+            center_w = image.size[0] / 2
+            center_h = image.size[1] / 2
+
+            image = image.crop((center_w - width  / 2,
+                                center_h - height / 2,
+                                center_w + width  / 2,
+                                center_h + height / 2))
+        
+            norm_image = np.array(image, dtype=np.float32)
+            norm_image -= 127.5
+            norm_image /= 127.5
+
+            # (channel, height, width)
+            return np.ascontiguousarray(np.transpose(norm_image, (2, 0, 1)))
+        except:
+            print("Error reading frame")
+
+def read_video(map_file, label_count, is_training, limit_epoch_size=sys.maxsize):
+        '''
+        Load video file paths and their corresponding labels.
+        '''
+        width           = 112
+        height          = 112
+        sequence_length = 16
+        channel_count   = 3
+        is_training     = is_training
+        video_files     = []
+        targets         = []
+        batch_start     = 0
+
+        try:
+            map_file_dir = os.path.dirname(map_file)
+
+            with open(map_file) as csv_file:
+                data = csv.reader(csv_file)
+                for row in data:
+                    video_files.append(os.path.join(map_file_dir, row[0]))
+                    target = [0.0] * label_count
+                    target[int(row[1])] = 1.0
+                    targets.append(target)
+
+            indices = np.arange(len(video_files))
+            if is_training:
+                np.random.shuffle(indices)
+            epoch_size = min(len(video_files), limit_epoch_size)
+            vectored_video_files = []
+            for video_file in video_files:
+                vectored_video_file = select_features(video_file, sequence_length, is_training,width,height)
+                print(vectored_video_file)
+                vectored_video_files.append(vectored_video_file)
+            
+            return vectored_video_files,targets
+        except:
+            print("error converting to vector form")
+
+num_output_classes = 11
+train_reader = read_video(os.path.join('D:/cognitive/sports/UCF11_DATA', 'train_map.csv'), num_output_classes, True)
+test_reader  = read_video(os.path.join('D:/cognitive/sports/UCF11_DATA', 'test_map.csv'), num_output_classes, True)
+
+import numpy
+numpy.save('D:/cognitive/sports/train_data.npy', train_reader[0])
+
+numpy.save('D:/cognitive/sports/train_label.npy', train_reader[1])
+
+numpy.save('D:/cognitive/sports/test_data.npy', test_reader[0])
+
+numpy.save('D:/cognitive/sports/test_label.npy', test_reader[1])
