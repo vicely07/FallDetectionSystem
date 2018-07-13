@@ -99,7 +99,6 @@ from keras.utils.vis_utils import plot_model
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
 # Define model
 model = Sequential()
-
 input_shape=(16, 112, 112, 3) # l, h, w, c
 
 
@@ -129,7 +128,9 @@ model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', nam
 model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b'))
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
 
-#attention LSTM model
+N = 300
+# N = 300 -> too few = no training
+inputs_1, outputs = get_data_recurrent(N, TIME_STEPS, INPUT_DIM)
 model.add(model_attention_applied_before_lstm())
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dropout(0.5))
