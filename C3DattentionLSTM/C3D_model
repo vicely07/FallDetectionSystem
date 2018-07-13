@@ -294,7 +294,7 @@ def attention_3d_block(inputs):
     return output_attention_mul
 
 def model_attention_applied_before_lstm():
-    inputs = Input(shape=(TIME_STEPS, INPUT_DIM,))
+    inputs = Input(shape=(20, 512,))
     attention_mul = attention_3d_block(inputs)
     lstm_units = 24
     attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
