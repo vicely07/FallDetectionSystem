@@ -356,7 +356,7 @@ model = model_attention_applied_before_lstm()
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 #model.add(Dropout(0.5))
-model.add(Dense(11, activation='softmax'))
+#model.add(Dense(11, activation='softmax'))
 
 
 print(model.summary())
