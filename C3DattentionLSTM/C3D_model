@@ -1,3 +1,4 @@
+'''
 import numpy
 
 train_d = numpy.load('train_data.npy')
@@ -7,7 +8,6 @@ train_l = numpy.load('train_label.npy')
 test_d = numpy.load('test_data.npy')
 
 test_l = numpy.load('test_label.npy')
-'''
 import matplotlib.pyplot as plt
 
 def plot_history(history):
@@ -45,9 +45,144 @@ def save_history(history):
         for i in range(nb_epoch):
             fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
+'''
+#------------------------------------------lstm attention model-------------------------------------------------------
 
-from keras.layers import (Activation, Conv3D, Dense, Dropout, Flatten,
-                          MaxPooling3D)
+from keras.layers import merge
+
+
+
+from keras.layers.core import *
+
+
+
+from keras.layers.recurrent import LSTM
+
+
+
+from keras.models import *
+
+
+
+
+
+
+
+INPUT_DIM = 512
+
+
+
+TIME_STEPS = 20
+
+
+
+# if True, the attention vector is shared across the input_dimensions where the attention is applied.
+
+
+
+SINGLE_ATTENTION_VECTOR = False
+
+
+
+APPLY_ATTENTION_BEFORE_LSTM = False
+
+
+
+
+
+
+
+
+
+
+
+def attention_3d_block(inputs):
+
+
+
+    # inputs.shape = (batch_size, time_steps, input_dim)
+
+
+
+    input_dim = int(inputs.shape[2])
+
+
+
+    a = Permute((2, 1))(inputs)
+
+
+
+    a = Reshape((input_dim, TIME_STEPS))(a) # this line is not useful. It's just to know which dimension is what.
+
+
+
+    a = Dense(TIME_STEPS, activation='softmax')(a)
+
+
+
+    if SINGLE_ATTENTION_VECTOR:
+
+
+
+        a = Lambda(lambda x: K.mean(x, axis=1), name='dim_reduction')(a)
+
+
+
+        a = RepeatVector(input_dim)(a)
+
+
+
+    a_probs = Permute((2, 1), name='attention_vec')(a)
+
+
+
+    output_attention_mul = merge([inputs, a_probs], name='attention_mul', mode='mul')
+
+
+
+    return output_attention_mul
+
+
+
+
+
+def model_attention_applied_before_lstm():
+
+
+
+    inputs = Input(shape=(TIME_STEPS, INPUT_DIM,))
+
+
+
+    attention_mul = attention_3d_block(inputs)
+
+
+
+    lstm_units = 24
+
+
+
+    attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
+
+
+
+    output = Dense(1, activation='sigmoid')(attention_mul)
+
+
+
+    model = Model(input=[inputs], output=output)
+
+
+
+    return model
+
+
+
+
+
+#---------------------------------------------model---------------------------------------------------------------
+from keras.models import Sequential
+from keras.layers import Dense
 from keras.layers.advanced_activations import LeakyReLU
 from keras.losses import categorical_crossentropy
 from keras.models import Sequential
@@ -56,32 +191,50 @@ from keras.utils import np_utils
 from keras.utils.vis_utils import plot_model
 from sklearn.model_selection import train_test_split
 from keras.utils.vis_utils import plot_model
+from keras.layers.convolutional import Convolution3D, MaxPooling3D
 # Define model
 model = Sequential()
-model.add(Conv3D(128, kernel_size=(3, 3, 3), input_shape=(
-train_d.shape[1:]), border_mode='same'))
-model.add(Activation('relu'))
-model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
-model.add(Activation('softmax'))
-model.add(MaxPooling3D(pool_size=(3, 3, 3), border_mode='same'))
-model.add(Dropout(0.5))
+    if backend == 'tf':
+        input_shape=(16, 112, 112, 3) # l, h, w, c
+    else:
+        input_shape=(3, 16, 112, 112) # c, l, h, w
 
-model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
-model.add(Activation('relu'))
-model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
-model.add(Activation('softmax'))
-model.add(MaxPooling3D(pool_size=(3, 3, 3), border_mode='same'))
-model.add(Dropout(0.5))
+model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1', input_shape=input_shape))
+model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1'))
 
+# 2nd layer group
 
-model.add(Flatten())
-model.add(Dense(512, activation='sigmoid'))
+model.add(Convolution3D(128, 3, 3, 3, activation='relu', border_mode='same', name='conv2'))
+model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool2'))
+
+# 3rd layer group
+
+model.add(Convolution3D(256, 3, 3, 3, activation='relu', border_mode='same', name='conv3a'))
+model.add(Convolution3D(256, 3, 3, 3, activation='relu', border_mode='same', name='conv3b'))
+model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool3'))
+
+# 4th layer group
+
+model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv4a'))
+model.add(Convolution3D(512, 3, 3, 3, activation='relu',border_mode='same', name='conv4b'))
+model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool4'))
+
+# 5th layer group
+
+model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a'))
+model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b'))
+model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
+
+    
+#attention LSTM model
+model.add(model_attention_applied_before_lstm())
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dropout(0.5))
 model.add(Dense(11, activation='softmax'))
-
-model.compile(loss=categorical_crossentropy,optimizer=Adam(), metrics=['accuracy'])
-model.summary()
+print(model.summary())
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
+
+'''
 #train_d, train_l, test_d, test_l = train_test_split(X, Y, test_size=0.2, random_state=43)
 
 history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130,epochs=100, verbose=1, shuffle=True)
@@ -97,3 +250,4 @@ model.save_weights( 'ucf101_3dcnnmodel.hd5')
 loss, acc = model.evaluate(test_d, test_l, verbose=1)
 print('Test loss:', loss)
 print('Test accuracy:', acc)
+'''
