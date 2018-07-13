@@ -288,12 +288,10 @@ def model_attention_applied_before_lstm():
     attention_mul = attention_3d_block(inputs)
     lstm_units = 24
     attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
-    model = Dense(1, activation='sigmoid')(attention_mul)
-    #model = Model(input=[inputs], output=output) 
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-    model = Dropout(0.5) 
-    model = Dense(1, activation='softmax')
-   
+    output = Dense(1, activation='sigmoid')(attention_mul)
+    output = Dropout(0.5) 
+    output = Dense(1, activation='softmax')
+    model = Model(input=[inputs], output=output)
     return model
 
 
@@ -346,7 +344,7 @@ model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='val
 inputs_1, outputs = get_data_recurrent(300, 20, 512)
 model = model_attention_applied_before_lstm()
 
-#model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 #model.add(Dense(25, input_shape=(25,), activation='softmax'))
 #model.add(Dropout(0.5))
