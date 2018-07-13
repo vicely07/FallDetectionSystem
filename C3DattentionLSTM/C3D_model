@@ -347,11 +347,13 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 
 # 5th layer group
 
-model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a'))
-model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b'))
-model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
+model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
+model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
+model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
+'''
 inputs_1, outputs = get_data_recurrent(300, 20, 512)
-model_attention_applied_before_lstm()
+model.add(model_attention_applied_before_lstm())
+'''
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dropout(0.5))
 model.add(Dense(11, activation='softmax'))
