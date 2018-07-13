@@ -152,7 +152,7 @@ def model_attention_applied_before_lstm():
 
     inputs = Input(shape=(TIME_STEPS, INPUT_DIM,))
 
-
+    
 
     attention_mul = attention_3d_block(inputs)
 
@@ -223,12 +223,14 @@ model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', nam
 model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b'))
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
 
-    
+'''
 #attention LSTM model
 model.add(model_attention_applied_before_lstm())
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dropout(0.5))
 model.add(Dense(11, activation='softmax'))
+'''
+
 print(model.summary())
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
 
