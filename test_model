@@ -10,7 +10,7 @@ from keras.models import *
 
 
 
-INPUT_DIM = 2
+INPUT_DIM = 512
 
 TIME_STEPS = 20
 
@@ -75,7 +75,6 @@ model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
 
 model.compile(loss='mean_squared_error', optimizer='sgd')
-model.add(attention_3d_block(model.output_shape))
 model.add(model_attention_applied_before_lstm())
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dropout(0.5))
