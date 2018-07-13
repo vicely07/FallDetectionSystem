@@ -276,12 +276,9 @@ from keras.layers.recurrent import LSTM
 from keras.models import *
 #from attention_utils import get_activations, get_data_recurrent
 
-INPUT_DIM = 512
-TIME_STEPS = 20
+#INPUT_DIM = 512
+#TIME_STEPS = 20
 
-# if True, the attention vector is shared across the input_dimensions where the attention is applied.
-SINGLE_ATTENTION_VECTOR = False
-APPLY_ATTENTION_BEFORE_LSTM = False
 
 def attention_3d_block(inputs):
     # inputs.shape = (batch_size, time_steps, input_dim)
@@ -351,10 +348,7 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a'))
 model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b'))
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
-
-N = 300
-# N = 300 -> too few = no training
-inputs_1, outputs = get_data_recurrent(N, TIME_STEPS, INPUT_DIM)
+inputs_1, outputs = get_data_recurrent(300, 20, 512)
 model.add(model_attention_applied_before_lstm())
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dropout(0.5))
