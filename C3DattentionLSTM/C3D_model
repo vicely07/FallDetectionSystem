@@ -223,7 +223,6 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a'))
 model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b'))
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
-'''
 
 #attention LSTM model
 model.add(model_attention_applied_before_lstm())
