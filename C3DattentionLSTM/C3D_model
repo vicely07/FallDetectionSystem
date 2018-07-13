@@ -289,7 +289,7 @@ def model_attention_applied_before_lstm():
     lstm_units = 24
     attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
     output = Dense(1, activation='sigmoid')(attention_mul)
-    output.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    Model(output).compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     output = Dense(1, activation='softmax')
     output = Dropout(0.5)
     model = Model(input=[inputs], output=output)
