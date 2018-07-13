@@ -32,7 +32,7 @@ def attention_3d_block(inputs):
 
     a = Permute((2, 1))(inputs)
 
-    a = Reshape((input_dim, TIME_STEPS))(a) # this line is not useful. It's just to know which dimension is what.
+    #a = Reshape((input_dim, TIME_STEPS))(a) # this line is not useful. It's just to know which dimension is what.
 
     a = Dense(TIME_STEPS, activation='softmax')(a)
 
