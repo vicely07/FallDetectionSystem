@@ -51,7 +51,7 @@ def attention_3d_block(inputs):
 
 def model_attention_applied_before_lstm():
 
-    inputs = input(shape=(TIME_STEPS, INPUT_DIM,))
+    inputs = Input(shape=(TIME_STEPS, INPUT_DIM,))
 
     attention_mul = attention_3d_block(inputs)
 
