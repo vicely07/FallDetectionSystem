@@ -288,12 +288,12 @@ def model_attention_applied_before_lstm():
     attention_mul = attention_3d_block(inputs)
     lstm_units = 24
     attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
-    output = Dense(1, activation='sigmoid')(attention_mul)
-    model = Model(input=[inputs], output=output) 
+    model = Dense(1, activation='sigmoid')(attention_mul)
+    #model = Model(input=[inputs], output=output) 
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model = Dropout(0.5) 
     model = Dense(1, activation='softmax')
-    model = Dropout(0.5)
-    
+   
     return model
 
 
