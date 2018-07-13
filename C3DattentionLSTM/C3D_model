@@ -52,6 +52,8 @@ from keras.layers import merge
 from keras.layers.core import *
 from keras.layers.recurrent import LSTM
 from keras.models import *
+from attention_utils import get_activations, get_data_recurrent
+
 INPUT_DIM = 512
 TIME_STEPS = 20
 
