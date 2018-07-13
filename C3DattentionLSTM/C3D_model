@@ -49,19 +49,7 @@ def save_history(history):
 #-------------------------------------------data handler--------------------------------------------------------------
 import keras.backend as K
 
-
-
 import numpy as np
-
-
-
-
-
-
-
-
-
-
 
 def get_activations(model, inputs, print_shape_only=False, layer_name=None):
 
@@ -355,8 +343,8 @@ inputs_1, outputs = get_data_recurrent(300, 20, 512)
 model = model_attention_applied_before_lstm()
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-model= Model(Dropout(0.5))
-model = Model(Dense(11, activation='softmax'))
+model= Dropout(0.5)
+model = Dense(11, activation='softmax')
 
 
 print(model.summary())
