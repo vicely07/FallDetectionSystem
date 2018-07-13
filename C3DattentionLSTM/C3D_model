@@ -68,7 +68,7 @@ from keras.models import *
 
 
 
-INPUT_DIM = 512
+INPUT_DIM = 3
 
 
 
@@ -200,7 +200,7 @@ input_shape=(16, 112, 112, 3) # l, h, w, c
 
 model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1', input_shape=input_shape))
 model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1'))
-'''
+
 # 2nd layer group
 
 model.add(Convolution3D(128, 3, 3, 3, activation='relu', border_mode='same', name='conv2'))
