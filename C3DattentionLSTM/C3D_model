@@ -355,8 +355,8 @@ inputs_1, outputs = get_data_recurrent(300, 20, 512)
 model = model_attention_applied_before_lstm()
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#model.add(Dropout(0.5))
-#model.add(Dense(11, activation='softmax'))
+model= Model(Dropout(0.5)))
+model = Model(Dense(11, activation='softmax'))
 
 
 print(model.summary())
