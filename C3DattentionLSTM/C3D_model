@@ -344,8 +344,9 @@ model = model_attention_applied_before_lstm()
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model= Sequential()
+model.add(model.add(Dense(25, input_shape=(25,), activation='softmax'))
 model.add(Dropout(0.5))
-model.add(Dense(11, activation='softmax'))
+
 
 print(model.summary())
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
