@@ -337,7 +337,10 @@ print(len(model.output_shape))
 print(type(model.output_shape))
 #reshaped = tf.reshape(model.output_shape, [5])
 #print(reshaped)
-model.add(Flatten())
+from numpy import array
+data = array([model.output_shape])
+print(data)
+'''
 #attention lstm model
 inputs_1, outputs = get_data_recurrent(300, 20, 512)
 
@@ -348,7 +351,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 #model.add(Dense(25, input_shape=(25,), activation='softmax'))
 #model.add(Dropout(0.5))
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
-
+'''
 print(model.summary())
 
 '''
