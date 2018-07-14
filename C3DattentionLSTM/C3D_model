@@ -245,17 +245,21 @@ def get_data_recurrent(n, time_steps, input_dim, attention_column=10):
     return x, y
    
 #------------------------------------------lstm attention model-------------------------------------------------------
-import tensorflow as tf
+
 from keras.layers import TimeDistributed
 from keras.layers import merge
 from keras.layers.core import *
 from keras.layers.recurrent import LSTM
 from keras.models import *
 #from attention_utils import get_activations, get_data_recurrent
+from keras import backend as K
+from keras.engine.topology import Layer
+import numpy as np
 
 #INPUT_DIM = 512
 #TIME_STEPS = 20
 
+#class attLSTM(Layer):
 
 def attention_3d_block(inputs):
     # inputs.shape = (batch_size, time_steps, input_dim)
@@ -273,7 +277,7 @@ def attention_3d_block(inputs):
     return output_attention_mul
 
 def model_attention_applied_before_lstm():
-    #inputs = Input(shape=(20, 512,))
+    inputs = Input(shape=(20, 512,))
     attention_mul = attention_3d_block(inputs)
     lstm_units = 24
     attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
@@ -334,10 +338,9 @@ model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='val
 #print(reshaped)
 
 #attention lstm model
-#inputs_1, outputs = get_data_recurrent(300, 20, model.output_shape[4])
-inputs = Input(shape=(20, 512,))
-model.add(attention_3d_block(inputs))
-model.add(model_attention_applied_before_lstm())
+inputs_1, outputs = get_data_recurrent(300, 20, model.output_shape[4])
+
+model_attention_applied_before_lstm()(model)
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
