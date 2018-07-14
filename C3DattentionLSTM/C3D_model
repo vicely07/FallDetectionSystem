@@ -333,16 +333,19 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
-print(len(model.output_shape))
-print(type(model.output_shape))
+
+image_input = Input(shape=(1,7,7,512)
+encoded_image = model(image_input)
+
+
 #reshaped = tf.reshape(model.output_shape, [5])
 #print(reshaped)
-from numpy import array
-data = array(model.output_shape)
-data = data.reshape((1, 5, 1))
-model.add(LSTM(24, input_shape=(5, 1)))
-model.add(Dense(1))
-'''
+#from numpy import array
+#data = array(model.output_shape)
+#data = data.reshape((1, 5, 1))
+#model.add(LSTM(24, input_shape=(5, 1)))
+#model.add(Dense(1))
+
 #attention lstm model
 inputs_1, outputs = get_data_recurrent(300, 20, 512)
 
@@ -353,7 +356,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 #model.add(Dense(25, input_shape=(25,), activation='softmax'))
 #model.add(Dropout(0.5))
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
-'''
+
 print(model.summary())
 
 '''
