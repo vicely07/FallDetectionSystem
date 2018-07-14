@@ -245,6 +245,7 @@ def get_data_recurrent(n, time_steps, input_dim, attention_column=10):
     return x, y
    
 #------------------------------------------lstm attention model-------------------------------------------------------
+import tensorflow as tf
 from keras.layers import TimeDistributed
 from keras.layers import merge
 from keras.layers.core import *
@@ -328,6 +329,10 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
+
+transposed = tf.transpose(model.output_shape, [0,3,1,2,4] )
+reshaped = tf.reshape( transposed, [5*1,7,7,512] )
+
 
 #attention lstm model
 inputs_1, outputs = get_data_recurrent(300, 20, model.output_shape[4])
