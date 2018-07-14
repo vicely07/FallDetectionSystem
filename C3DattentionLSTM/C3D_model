@@ -352,7 +352,7 @@ print(reshaped)
 #attention lstm model
 #inputs_1, outputs = get_data_recurrent(300, 20, 512)
 '''
-#inputs = Input(shape=(20,25088,), tensor=(model.input))
+#inputs = Input(shape=(20,25088,))(model)
 inputs = model.input
 a = Permute((2, 1))(inputs)
 a = Dense(20, activation='softmax')(a)
