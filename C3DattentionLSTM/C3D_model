@@ -333,10 +333,11 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
-
+print(len(model.output_shape))
+print(len(model.output_shape))
 #reshaped = tf.reshape(model.output_shape, [5])
 #print(reshaped)
-
+'''
 #attention lstm model
 inputs_1, outputs = get_data_recurrent(300, 20, model.output_shape[4])
 
@@ -348,7 +349,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 #model.add(Dropout(0.5))
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
 print(model.summary())
-
+'''
 '''
 #train_d, train_l, test_d, test_l = train_test_split(X, Y, test_size=0.2, random_state=43)
 
