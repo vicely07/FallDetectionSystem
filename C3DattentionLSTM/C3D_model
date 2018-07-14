@@ -238,24 +238,12 @@ def get_data_recurrent(n, time_steps, input_dim, attention_column=10):
     :return: x: model inputs, y: model targets
 
 
-
-    """
-
-
-
+    '''
     x = np.random.standard_normal(size=(n, time_steps, input_dim))
-
-
-
     y = np.random.randint(low=0, high=2, size=(n, 1))
-
-
-
     x[:, attention_column, :] = np.tile(y[:], (1, input_dim))
-
-
-
     return x, y
+   '''
 #------------------------------------------lstm attention model-------------------------------------------------------
 from keras.layers import TimeDistributed
 from keras.layers import merge
@@ -341,7 +329,7 @@ model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', na
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
 model.summary()
-
+model.output_shape.summary()
 #attention lstm model
 model = Model(inputs_1, outputs = get_data_recurrent(300, 20, 512))
 model.add(model_attention_applied_before_lstm())
