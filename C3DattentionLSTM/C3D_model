@@ -271,7 +271,7 @@ def attention_3d_block(inputs):
     if SINGLE_ATTENTION_VECTOR:
         a = Lambda(lambda x: K.mean(x, axis=1), name='dim_reduction')(a)
         a = RepeatVector(input_dim)(a)
-    '''
+    
     a_probs = Permute((2, 1), name='attention_vec')(a)
     output_attention_mul = merge([inputs, a_probs], name='attention_mul', mode='mul')
     return output_attention_mul
