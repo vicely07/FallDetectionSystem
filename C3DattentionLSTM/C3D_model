@@ -337,7 +337,7 @@ print(len(model.output_shape))
 print(type(model.output_shape))
 #reshaped = tf.reshape(model.output_shape, [5])
 #print(reshaped)
-
+model.add(Flatten())
 #attention lstm model
 inputs_1, outputs = get_data_recurrent(300, 20, model.output_shape[4])
 
