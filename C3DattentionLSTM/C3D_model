@@ -334,6 +334,10 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_
 model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
 model.add(TimeDistributed(Flatten()))
+model.add(LSTM(24, return_sequences=False))
+model.add(Dense(1, activation='softmax'))
+model.add(Dropout(0.5)(output))
+
 
 '''
 image_input = Input(shape=(model.output_shape))
@@ -351,15 +355,16 @@ print(reshaped)
 
 #attention lstm model
 #inputs_1, outputs = get_data_recurrent(300, 20, 512)
-'''
+
 inputs = Input(shape=(20,25088,))
-inputs=TimeDistributed(model)(inputs)
+#inputs=TimeDistributed(model)(inputs)
 #inputs = model.input
 a = Permute((2, 1))(inputs)
 a = Dense(20, activation='softmax')(a)
 a_probs = Permute((2, 1), name='attention_vec')(a)
 output_attention_mul = merge([inputs, a_probs], name='attention_mul', mode='mul')
 lstm_units = 24
+
 attention_mul = LSTM(lstm_units, return_sequences=False)(output_attention_mul)
 output = Dense(1, activation='sigmoid')(attention_mul)
 output = Dense(1, activation='softmax')(output)
@@ -371,7 +376,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 #model.add(Dense(25, input_shape=(25,), activation='softmax'))
 #model.add(Dropout(0.5))
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
-
+'''
 print(model.summary())
 
 '''
