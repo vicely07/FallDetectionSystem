@@ -308,8 +308,8 @@ model = Sequential()
 input_shape=(16, 112, 112, 3) # l, h, w, c
 
 
-model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1', input_shape=input_shape))
-model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1'))
+model.add(TimeDistributed(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1', input_shape=input_shape)))
+model.add(TimeDistributed(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1')))
 
 # 2nd layer group
 
@@ -333,14 +333,14 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
-print(type(model.input))
+#model.add(TimeDistrbuted(model))
 '''
 image_input = Input(shape=(model.output_shape))
 encoded_image = model(image_input)
 '''
 from numpy import array
 data = array(model.output_shape)
-reshaped = data.reshape((49,512,))
+reshaped = data.reshape((25088,1))
 print(reshaped)
 #print(reshaped)
 #
@@ -350,7 +350,7 @@ print(reshaped)
 '''
 #attention lstm model
 #inputs_1, outputs = get_data_recurrent(300, 20, 512)
-inputs = Input(shape=(20,512,), tensor=(model.input))
+inputs = Input(shape=(20,512,))
 a = Permute((2, 1))(inputs)
 a = Dense(20, activation='softmax')(a)
 a_probs = Permute((2, 1), name='attention_vec')(a)
@@ -360,8 +360,8 @@ attention_mul = LSTM(lstm_units, return_sequences=False)(output_attention_mul)
 output = Dense(1, activation='sigmoid')(attention_mul)
 output = Dense(1, activation='softmax')(output)
 output = Dropout(0.5)(output)
-model = Model(input=[inputs], output=output)
-#model = Model(input=[model.input], output=model)
+#model = Model(input=[inputs], output=output)
+model = model(output)
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 #model.add(Dense(25, input_shape=(25,), activation='softmax'))
