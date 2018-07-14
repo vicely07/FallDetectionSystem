@@ -255,7 +255,7 @@ from keras.models import *
 from keras import backend as K
 from keras.engine.topology import Layer
 import numpy as np
-
+'''
 #INPUT_DIM = 512
 #TIME_STEPS = 20
 
@@ -286,7 +286,7 @@ def model_attention_applied_before_lstm():
     output = Dropout(0.5)(output)
     model = Model(input=model.input, output=output)
     return model
-
+'''
 
 
 
@@ -348,16 +348,18 @@ encoded_image = model(image_input)
 '''
 #attention lstm model
 inputs_1, outputs = get_data_recurrent(300, 20, 512)
-model = model_attention_applied_before_lstm()    
-    inputs = Input(shape=(20, 512,))
-    attention_mul = attention_3d_block(inputs)
-    lstm_units = 24
-    attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
-    output = Dense(1, activation='sigmoid')(attention_mul)
-    output = Dense(1, activation='softmax')(output)
-    output = Dropout(0.5)(output)
-    model = Model(input=model.input, output=output)
-    return model
+inputs = Input(shape=(20, 512,))
+a = Permute((2, 1))(inputs)
+a = Dense(20, activation='softmax')(a)
+a_probs = Permute((2, 1), name='attention_vec')(a)
+output_attention_mul = merge([inputs, a_probs], name='attention_mul', mode='mul')
+lstm_units = 24
+attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
+output = Dense(1, activation='sigmoid')(attention_mul)
+output = Dense(1, activation='softmax')(output)
+output = Dropout(0.5)(output)
+model = Model(input=model.input, output=output)
+return model
 
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
