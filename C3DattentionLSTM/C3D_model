@@ -348,7 +348,7 @@ encoded_image = model(image_input)
 '''
 #attention lstm model
 #inputs_1, outputs = get_data_recurrent(300, 20, 512)
-inputs = Input(model.input)
+inputs = Input(shape=(20,512,), tensor=(model.output_shape))
 a = Permute((2, 1))(inputs)
 a = Dense(20, activation='softmax')(a)
 a_probs = Permute((2, 1), name='attention_vec')(a)
