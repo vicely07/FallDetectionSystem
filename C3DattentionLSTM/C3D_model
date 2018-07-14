@@ -306,36 +306,36 @@ from keras.layers.convolutional import Convolution3D, MaxPooling3D
 # Define model
 model = Sequential()
 from numpy import array
-input_shape=(1, 16, 112, 112, 3) # l, h, w, c
+input_shape=(20, 16, 112, 112, 3) # l, h, w, c
 
 model.add(TimeDistributed(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1'), input_shape=input_shape))
 model.add(TimeDistributed(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1')))
-'''
+
 # 2nd layer group
 
-model.add(Convolution3D(128, 3, 3, 3, activation='relu', border_mode='same', name='conv2'))
-model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool2'))
+model.add(TimeDistributed(Convolution3D(128, 3, 3, 3, activation='relu', border_mode='same', name='conv2')))
+model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool2')))
 
 # 3rd layer group
 
-model.add(Convolution3D(256, 3, 3, 3, activation='relu', border_mode='same', name='conv3a'))
-model.add(Convolution3D(256, 3, 3, 3, activation='relu', border_mode='same', name='conv3b'))
-model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool3'))
+model.add(TimeDistributed(Convolution3D(256, 3, 3, 3, activation='relu', border_mode='same', name='conv3a')))
+model.add(TimeDistributed(Convolution3D(256, 3, 3, 3, activation='relu', border_mode='same', name='conv3b')))
+model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool3')))
 
 # 4th layer group
 
-model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv4a'))
-model.add(Convolution3D(512, 3, 3, 3, activation='relu',border_mode='same', name='conv4b'))
-model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool4'))
+model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv4a')))
+model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu',border_mode='same', name='conv4b')))
+model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool4')))
 
 # 5th layer group
 
-model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
-model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
-model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
-model.add(Flatten())
-model.add(TimeDistributed(model))
+model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
+model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
+model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
+model.add(TimeDistributed(Flatten()))
 
+'''
 image_input = Input(shape=(model.output_shape))
 encoded_image = model(image_input)
 
