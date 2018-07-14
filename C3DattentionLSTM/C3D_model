@@ -351,7 +351,8 @@ print(reshaped)
 
 #attention lstm model
 #inputs_1, outputs = get_data_recurrent(300, 20, 512)
-inputs = Input(shape=(20,512,))
+'''
+inputs = Input(shape=(20,25088,), tensor=(model.output_shape))
 a = Permute((2, 1))(inputs)
 a = Dense(20, activation='softmax')(a)
 a_probs = Permute((2, 1), name='attention_vec')(a)
@@ -368,7 +369,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 #model.add(Dense(25, input_shape=(25,), activation='softmax'))
 #model.add(Dropout(0.5))
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
-'''
+
 print(model.summary())
 
 '''
