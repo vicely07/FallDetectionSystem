@@ -337,7 +337,7 @@ model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='val
 '''
 image_input = Input(shape=(model.output_shape))
 encoded_image = model(image_input)
-'''
+
 from numpy import array
 data = array(model.output_shape)
 reshaped = data.reshape((25088,1))
@@ -369,7 +369,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
 
 print(model.summary())
-'''
+
 '''
 #train_d, train_l, test_d, test_l = train_test_split(X, Y, test_size=0.2, random_state=43)
 
