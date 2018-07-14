@@ -333,6 +333,7 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
+model.add(Flatten())
 model.add(TimeDistributed(model))
 '''
 image_input = Input(shape=(model.output_shape))
