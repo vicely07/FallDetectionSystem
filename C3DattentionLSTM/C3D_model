@@ -338,8 +338,10 @@ print(type(model.output_shape))
 #reshaped = tf.reshape(model.output_shape, [5])
 #print(reshaped)
 from numpy import array
-data = array([model.output_shape])
-print(data)
+data = array(model.output_shape)
+data = data.reshape((512, 49, 1))
+model.add(LSTM(24, input_shape=(49, 1)))
+model.add(Dense(1))
 '''
 #attention lstm model
 inputs_1, outputs = get_data_recurrent(300, 20, 512)
