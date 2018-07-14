@@ -328,22 +328,17 @@ model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='vali
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a')))
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
-model.summary()
-print(model.output_shape[4])
-print(model.output_dim)
+
 #attention lstm model
-inputs_1, outputs = get_data_recurrent(300, 20, )
+inputs_1, outputs = get_data_recurrent(300, 20, model.output_shape[4])
 #model.add(model_attention_applied_before_lstm())
 
-#model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-#model.add(Dense(25, input_shape=(25,), activation='softmax'))
-#model.add(Dropout(0.5))
-
-
-print(model.summary())
+model.add(Dense(25, input_shape=(25,), activation='softmax'))
+model.add(Dropout(0.5))
 #plot_model(model, show_shapes=True,to_file=os.path.join('D:/cognitive/sports/', 'model.png'))
-
+print(model.summary())
 '''
 #train_d, train_l, test_d, test_l = train_test_split(X, Y, test_size=0.2, random_state=43)
 
