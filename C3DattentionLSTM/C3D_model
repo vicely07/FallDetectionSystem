@@ -259,7 +259,7 @@ from keras.models import *
 
 def attention_3d_block(inputs):
     # inputs.shape = (batch_size, time_steps, input_dim)
-    input_dim = int(inputs.shape[2])
+    #input_dim = int(inputs.shape[2])
     a = Permute((2, 1))(inputs)
     #a = Reshape((input_dim, TIME_STEPS))(a) # this line is not useful. It's just to know which dimension is what.
     a = Dense(20, activation='softmax')(a)
@@ -273,7 +273,7 @@ def attention_3d_block(inputs):
     return output_attention_mul
 
 def model_attention_applied_before_lstm():
-    inputs = Input(shape=(20, 512,))
+    #inputs = Input(shape=(20, 512,))
     attention_mul = attention_3d_block(inputs)
     lstm_units = 24
     attention_mul = LSTM(lstm_units, return_sequences=False)(attention_mul)
@@ -330,11 +330,13 @@ model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', na
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
 
-reshaped = tf.reshape( model.output_shape, [5] )
-print(reshaped)
+#reshaped = tf.reshape(model.output_shape, [5])
+#print(reshaped)
 '''
 #attention lstm model
-inputs_1, outputs = get_data_recurrent(300, 20, model.output_shape[4])
+#inputs_1, outputs = get_data_recurrent(300, 20, model.output_shape[4])
+inputs = Input(shape=(20, 512,))
+model.add(attention_3d_block(inputs))
 model.add(model_attention_applied_before_lstm())
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
