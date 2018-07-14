@@ -329,7 +329,7 @@ model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', na
 model.add((Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 model.add((MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
 model.summary()
-print(model.output_shape)
+print(model.output_shape[2])
 #attention lstm model
 inputs_1, outputs = get_data_recurrent(300, 20, 512)
 #model.add(model_attention_applied_before_lstm())
