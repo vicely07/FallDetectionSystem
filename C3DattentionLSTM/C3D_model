@@ -339,7 +339,7 @@ print(type(model.output_shape))
 #print(reshaped)
 from numpy import array
 data = array(model.output_shape)
-data = data.reshape((512, 5, 1))
+data = data.reshape((1, 5, 1))
 model.add(LSTM(24, input_shape=(5, 1)))
 model.add(Dense(1))
 '''
