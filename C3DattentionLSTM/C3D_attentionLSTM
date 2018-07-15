@@ -2,7 +2,7 @@
 
 from keras import backend as K
 from keras.engine import InputSpec
-from keras.layers import LSTM, activations, Wrapper, Recurrent
+from keras.layers import LSTM, activations, Wrapper, Recurrent, recurrent
  
 class Attention(Wrapper):
     """
