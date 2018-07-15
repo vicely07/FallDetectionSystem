@@ -1,68 +1,6 @@
 #---------------------------------------Creating attention model-----------------------------------------------------------------
 class AttentionLSTM(LSTM):
 
-    """LSTM with attention mechanism
-
-
-
-    This is an LSTM incorporating an attention mechanism into its hidden states.
-
-    Currently, the context vector calculated from the attended vector is fed
-
-    into the model's internal states, closely following the model by Xu et al.
-
-    (2016, Sec. 3.1.2), using a soft attention model following
-
-    Bahdanau et al. (2014).
-
-
-
-    The layer expects two inputs instead of the usual one:
-
-        1. the "normal" layer input; and
-
-        2. a 3D vector to attend.
-
-
-
-    Args:
-
-        attn_activation: Activation function for attentional components
-
-        attn_init: Initialization function for attention weights
-
-        output_alpha (boolean): If true, outputs the alpha values, i.e.,
-
-            what parts of the attention vector the layer attends to at each
-
-            timestep.
-
-
-
-    References:
-
-        * Bahdanau, Cho & Bengio (2014), "Neural Machine Translation by Jointly
-
-          Learning to Align and Translate", <https://arxiv.org/pdf/1409.0473.pdf>
-
-        * Xu, Ba, Kiros, Cho, Courville, Salakhutdinov, Zemel & Bengio (2016),
-
-          "Show, Attend and Tell: Neural Image Caption Generation with Visual
-
-          Attention", <http://arxiv.org/pdf/1502.03044.pdf>
-
-
-
-    See Also:
-
-        `LSTM`_ in the Keras documentation.
-
-
-
-        .. _LSTM: http://keras.io/layers/recurrent/#lstm
-
-    """
-
     def __init__(self, *args, attn_activation='tanh', attn_init='orthogonal',
 
                  output_alpha=False, **kwargs):
