@@ -2,15 +2,13 @@
 from keras.layers import LSTM, TimeDistributed, Flatten
 class AttentionLSTM(LSTM):
 
-    def __init__(self, *args, attn_activation='tanh', attn_init='orthogonal',
+    def __init__(self, *args, attn_activation='tanh', attn_init='orthogonal', output_alpha=False, **kwargs):
 
-                 output_alpha=False, **kwargs):
+        self.attn_activation = activations.get('tanh')
 
-        self.attn_activation = activations.get(attn_activation)
+        self.attn_init = initializations.get('orthogonal')
 
-        self.attn_init = initializations.get(attn_init)
-
-        self.output_alpha = output_alpha
+        self.output_alpha = False
 
         super().__init__(*args, **kwargs)
 
@@ -511,9 +509,10 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 
 model.add(TimeDistributed(Flatten()))
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
-model.add(AttentionLSTM(LSTM(24, activation='softmax', return_sequences=False)))
-model.add(Dropout(0.5))
+model.add(AttentionLSTM(LSTM(24, return_sequences=False)))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.add(Dense(11, activation='softmax')
+model.add(Dropout(0.5))
 
 print(model.summary())
 
