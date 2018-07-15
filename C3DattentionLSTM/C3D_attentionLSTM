@@ -447,6 +447,7 @@ from sklearn.model_selection import train_test_split
 from keras.utils.vis_utils import plot_model
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
+from numpy import np
 
 # Define model
 
@@ -512,7 +513,7 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 model.add(TimeDistributed(Flatten()))
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
 #model.add(LSTM(24, return_sequences=False))
-model.add(AttentionLSTM(24, input_shape=[model.input, model.input]))
+model.add(AttentionLSTM(24, input_shape=[np.array(model.output_shape)]))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dense(11, activation='softmax'))
 model.add(Dropout(0.5))
