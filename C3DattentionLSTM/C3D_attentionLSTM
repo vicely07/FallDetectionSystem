@@ -511,8 +511,7 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 
 model.add(TimeDistributed(Flatten()))
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
-model.add(AttentionLSTM(LSTM(24, return_sequences=False)))
-model.add(Dense(11, activation='softmax'))
+model.add(AttentionLSTM(LSTM(24, activation='softmax', return_sequences=False)))
 model.add(Dropout(0.5))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
