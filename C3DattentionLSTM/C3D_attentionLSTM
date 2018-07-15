@@ -1,5 +1,6 @@
 #---------------------------------------Creating attention model-----------------------------------------------------------------
-class AttentionLSTM(layer):
+from keras.layers import LSTM
+class AttentionLSTM(LSTM):
 
     def __init__(self, *args, attn_activation='tanh', attn_init='orthogonal',
 
