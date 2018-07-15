@@ -305,9 +305,7 @@ class AttentionLSTM(LSTM):
 
         if self.consume_less == 'gpu':
 
-            z = K.dot(x * B_W[0], self.W) + K.dot(h_tm1 * B_U[0], self.U) \
-
-                + K.dot(z_hat, self.Z) + self.b
+            z = K.dot(x * B_W[0], self.W) + K.dot(h_tm1 * B_U[0], self.U) + K.dot(z_hat, self.Z) + self.b
 
 
 
