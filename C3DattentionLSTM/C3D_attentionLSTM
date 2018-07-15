@@ -1,5 +1,5 @@
 #---------------------------------------Creating attention model-----------------------------------------------------------------
-from keras.layers import LSTM
+from keras.layers import LSTM, TimeDistributed
 class AttentionLSTM(LSTM):
 
     def __init__(self, *args, attn_activation='tanh', attn_init='orthogonal',
