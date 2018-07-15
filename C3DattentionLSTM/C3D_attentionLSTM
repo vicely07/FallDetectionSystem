@@ -1,5 +1,5 @@
 #---------------------------------------Creating attention model-----------------------------------------------------------------
-class AttentionLSTM(LSTM):
+class AttentionLSTM(layer):
 
     def __init__(self, *args, attn_activation='tanh', attn_init='orthogonal',
 
