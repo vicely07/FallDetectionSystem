@@ -1,14 +1,16 @@
 #---------------------------------------Creating attention model-----------------------------------------------------------------
 from keras.layers import LSTM, TimeDistributed, Flatten
+from keras import initializations, activations
+
 class AttentionLSTM(LSTM):
 
     def __init__(self, *args, attn_activation='tanh', attn_init='orthogonal', output_alpha=False, **kwargs):
 
-        self.attn_activation = activations.get('tanh')
+        self.attn_activation = activations.get(attn_activation)
 
-        self.attn_init = initializations.get('orthogonal')
+        self.attn_init = initializations.get(attn_init)
 
-        self.output_alpha = False
+        self.output_alpha = output_alpha
 
         super().__init__(*args, **kwargs)
 
