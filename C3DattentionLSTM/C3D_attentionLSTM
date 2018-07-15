@@ -447,7 +447,7 @@ from sklearn.model_selection import train_test_split
 from keras.utils.vis_utils import plot_model
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
-from numpy import np
+import numpy as np
 
 # Define model
 
