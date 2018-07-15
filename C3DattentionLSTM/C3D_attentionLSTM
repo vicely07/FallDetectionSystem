@@ -150,7 +150,7 @@ class Attention(Wrapper):
 #---------------------------------------3d CNN model--------------------------------------------------------------
 from keras.models import Sequential
 
-from keras.layers import Dense
+from keras.layers import Dense, TimeDistributed
 
 from keras.layers.advanced_activations import LeakyReLU
 
