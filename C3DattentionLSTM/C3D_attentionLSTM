@@ -154,6 +154,8 @@ from keras.layers import Dense, TimeDistributed, Flatten, Dropout
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
 
+from keras import optimizers
+
 import numpy as np
 
 # Define model
@@ -214,14 +216,15 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_
 
 model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 
-model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5', consume_less='gpu')))
-
+model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
+model.add(Dropout(0.5))
 model.add(TimeDistributed(Flatten()))
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
 model.add(AttentionLSTM(recurrent.LSTM(24, consume_less='gpu', return_sequences=True)))
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
+model.compile(loss='mean_squared_error', optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dense(11, activation='softmax'))
-model.add(Dropout(0.5))
+
 
 print(model.summary())
 
