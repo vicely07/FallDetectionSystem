@@ -217,7 +217,7 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
 
 
-model.add(TimeDistributed(Flatten()))
+#model.add(TimeDistributed(Flatten()))
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
 model.add(AttentionLSTM(recurrent.LSTM(24, consume_less='gpu', return_sequences=True)))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
