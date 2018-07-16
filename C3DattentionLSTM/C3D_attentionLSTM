@@ -214,7 +214,7 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_
 
 model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b')))
 
-model.add(AttentionLSTM(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5', consume_less='gpu')))
+model.add(AttentionLSTM(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5', consume_less='gpu'))))
 
 #model.add(TimeDistributed(Flatten()))
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
