@@ -152,23 +152,8 @@ from keras.models import Sequential
 
 from keras.layers import Dense, TimeDistributed, Flatten
 
-from keras.layers.advanced_activations import LeakyReLU
-
-from keras.losses import categorical_crossentropy
-
-from keras.models import Sequential
-
-from keras.optimizers import Adam
-
-from keras.utils import np_utils
-
-from keras.utils.vis_utils import plot_model
-
-from sklearn.model_selection import train_test_split
-
-from keras.utils.vis_utils import plot_model
-
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
+
 import numpy as np
 
 # Define model
