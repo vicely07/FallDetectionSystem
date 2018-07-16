@@ -220,13 +220,12 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 
 model.add(Dropout(0.5))
 model.add(TimeDistributed(Flatten()))
+'''
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
 model.add(AttentionLSTM(recurrent.LSTM(24, consume_less='gpu', return_sequences=True)))
 sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
 model.add(Dense(11, activation='softmax'))
-
-
-
+'''
 
 print(model.summary())
 #----------------------------------------------------------Load parameter-------------------------------------------------------
@@ -276,6 +275,9 @@ from keras.models import model_from_json
 
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
+model.add(AttentionLSTM(recurrent.LSTM(24, consume_less='gpu', return_sequences=True)))
+sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
+model.add(Dense(11, activation='softmax'))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 with open('dataset/labels.txt', 'r') as f:
