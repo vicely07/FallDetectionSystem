@@ -32,7 +32,7 @@ class AttentionLSTM(Wrapper):
         if layer.get_config()['consume_less']=='cpu':
             raise Exception("AttentionLSTMWrapper doesn't support RNN's with consume_less='cpu'")
         self.supports_masking = True
-        super(Attention, self).__init__(layer, **kwargs)
+        super(AttentionLSTM, self).__init__(layer, **kwargs)
  
     def build(self, input_shape):
         assert len(input_shape) >= 3
