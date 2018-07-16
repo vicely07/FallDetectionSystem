@@ -222,7 +222,7 @@ model.add(TimeDistributed(Flatten()))
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
 model.add(AttentionLSTM(recurrent.LSTM(24, consume_less='gpu', return_sequences=True)))
 sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
-model.compile(loss='mean_squared_error', optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.add(Dense(11, activation='softmax'))
 
 
