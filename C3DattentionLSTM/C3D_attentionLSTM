@@ -255,8 +255,8 @@ for i in conv_layers_indx:
         layer.blobs[0].num, layer.blobs[0].channels, layer.blobs[0].length,
         layer.blobs[0].height, layer.blobs[0].width
     )
-    weights_p = rot90(weights_p)
     weights_p = np.transpose(weights_p, (2, 3, 4, 1, 0))
+    weights_p = rot90(weights_p)
     params.append([weights_p, weights_b])
 
 
