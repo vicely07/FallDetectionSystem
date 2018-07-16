@@ -150,7 +150,7 @@ class AttentionLSTM(Wrapper):
 #---------------------------------------3d CNN model--------------------------------------------------------------
 from keras.models import Sequential
 
-from keras.layers import Dense, TimeDistributed, Flatten
+from keras.layers import Dense, TimeDistributed, Flatten, Dropout
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
 
