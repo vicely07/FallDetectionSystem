@@ -280,7 +280,7 @@ sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
 model.add(Dense(11, activation='softmax'))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-with open('dataset/labels.txt', 'r') as f:
+with open('labels.txt', 'r') as f:
     labels = [line.strip() for line in f.readlines()]
 print('Total labels: {}'.format(len(labels)))
 
