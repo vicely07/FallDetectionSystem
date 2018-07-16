@@ -43,7 +43,7 @@ class AttentionLSTM(Wrapper):
             self.layer.build(input_shape)
             self.layer.built = True
  
-        super(Attention, self).build()
+        super(AttentionLSTM, self).build()
          
         self.W1 = self.layer.init((input_dim, input_dim, 1, 1), name='{}_W1'.format(self.name))
         self.W2 = self.layer.init((self.layer.output_dim, input_dim), name='{}_W2'.format(self.name))
