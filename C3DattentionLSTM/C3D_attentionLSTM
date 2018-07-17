@@ -418,8 +418,6 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 model.add(TimeDistributed(Dropout(0.5)))
 model.add(TimeDistributed(Flatten()))
 
-'''
-
 #----------------------------------------------------------Load parameter-------------------------------------------------------
 import caffe_pb2 as caffe
 import numpy as np
@@ -467,8 +465,8 @@ from keras.models import model_from_json
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
-'''
-model.add(AttentionLSTM(recurrent.LSTM(24, , return_sequences=True, consume_less='gpu')))
+
+model.add(AttentionLSTM(recurrent.LSTM(24, return_sequences=True, consume_less='gpu')))
 '''
 model.add(recurrent.LSTM(24, consume_less='mem', return_sequences=True))
 model.add(AttentionWithContext())
@@ -477,12 +475,12 @@ model.add(Dense(487, activation='softmax'))
 sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.summary()
-'''
+
 with open('labels.txt', 'r') as f:
     labels = [line.strip() for line in f.readlines()]
 print('Total labels: {}'.format(len(labels)))
-'''
-'''
+
+
 import cv2
 import numpy as np
 
@@ -512,4 +510,4 @@ output = model.predict_on_batch(TimeDistributed(X))
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(labels[output[0].argmax()]))
-
+'''
