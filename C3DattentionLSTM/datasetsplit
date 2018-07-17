@@ -102,8 +102,7 @@ train, test = split_data(groups, '.mpg')
 write_to_csv(train, os.path.join('UCF11_data', 'train_map.csv'))
 write_to_csv(test, os.path.join('UCF11_data', 'test_map.csv'))
 
-Done
-Done
+
 '''
 1) Read video from path in csv, extract frames
 2) Convert frames to numpy arrays and save in file
