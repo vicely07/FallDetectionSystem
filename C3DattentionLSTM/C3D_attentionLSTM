@@ -498,9 +498,9 @@ X = np.array(vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
 #X = np.reshape(X, (X[0],1, X[1]))
 
 
-train_d = numpy.load('X')
+train_d = np.load('X')
 
-train_l = numpy.load('labels.txt')
+train_l = np.load('labels.txt')
 loss, acc = model.evaluate(train_d, train_l, verbose=1)
 print('Test loss:', loss)
 print('Test accuracy:', acc)
