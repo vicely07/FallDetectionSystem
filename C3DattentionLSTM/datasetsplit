@@ -213,10 +213,10 @@ test_reader  = read_video(os.path.join('UCF11_dta', 'test_map.csv'), num_output_
 
 import numpy
 
-numpy.save('train_data', train_reader[0])
+numpy.save('train_data.npy', train_reader[0])
 
-numpy.save('train_label', train_reader[1])
+numpy.save('train_label.npy', train_reader[1])
 
-numpy.save('test_data', test_reader[0])
+numpy.save('test_data.npy', test_reader[0])
 
-numpy.save('test_label', test_reader[1])
+numpy.save('test_label.npy', test_reader[1])
