@@ -494,8 +494,9 @@ while True:
     vid.append(cv2.resize(img, (171, 128)))
 vid = np.array(vid, dtype=np.float32)
 
-X = (1, vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
+X = np.array(vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
 #X = np.reshape(X, (X[0],1, X[1]))
+X[0] = np.array([1])
 print(np.array([X]))
 
 output = model.predict_on_batch(np.array([X]))
