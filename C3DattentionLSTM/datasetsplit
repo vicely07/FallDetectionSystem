@@ -209,7 +209,8 @@ def read_video(map_file, label_count, is_training, limit_epoch_size=sys.maxsize)
 
 num_output_classes = 11
 train_reader = read_video(os.path.join('UCF11_data', 'train_map.csv'), num_output_classes, True)
-test_reader  = read_video(os.path.join('UCF11_dta', 'test_map.csv'), num_output_classes, True)
+test_reader  = read_video(os.path.join('UCF11_data', 'test_map.csv'), num_output_classes, True)
+type(test_reader)
 
 import numpy
 
