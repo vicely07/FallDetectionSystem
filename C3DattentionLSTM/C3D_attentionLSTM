@@ -493,8 +493,9 @@ while True:
 vid = np.array(vid, dtype=np.float32)
 
 X = np.array(vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
-print(X)
+X = np.append([1])
 
+output = model.predict_on_batch(X)
 '''
 #X = np.reshape(X, (X[0],1, X[1]))
 
@@ -506,7 +507,6 @@ loss, acc = model.evaluate(train_d, train_l, verbose=1)
 print('Test loss:', loss)
 print('Test accuracy:', acc)
 
-output = model.predict_on_batch(timesteps, X)
 
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
