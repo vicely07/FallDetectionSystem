@@ -150,6 +150,7 @@ class AttentionLSTM(Wrapper):
 '''
 #------------------------------------------------------------------Attention with context 2----------------------------------------------
 from keras.engine.topology import Layer
+from keras import initializers
 
 def dot_product(x, kernel):
 
