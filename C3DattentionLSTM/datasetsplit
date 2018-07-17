@@ -96,7 +96,7 @@ def write_to_csv(items, file_path):
                 writer.writerow(item)
     print("Done")
 
-groups = load_groups("D:/UCF11_updated_mpg")
+groups = load_groups("UCF11_updated_mpg")
 train, test = split_data(groups, '.mpg')
 
 write_to_csv(train, os.path.join('D:/cognitive/sports/UCF11_DATA', 'train_map.csv'))
