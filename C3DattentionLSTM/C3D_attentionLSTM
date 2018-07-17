@@ -344,6 +344,7 @@ class AttentionWithContext(Layer):
 
         return (input_shape[0], input_shape[-1],)
 '''
+
 #---------------------------------------3d CNN model--------------------------------------------------------------
 from keras.models import Sequential
 
@@ -506,10 +507,10 @@ train_l = labels
 loss, acc = model.evaluate(train_d, train_l, verbose=1)
 print('Test loss:', loss)
 print('Test accuracy:', acc)
-
-output = model.predict_on_batch(TimeDistributed(X))
+'''
+output = model.predict_on_batch(timesteps, X)
 
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(labels[output[0].argmax()]))
-'''
+
