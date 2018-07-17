@@ -209,14 +209,14 @@ def read_video(map_file, label_count, is_training, limit_epoch_size=sys.maxsize)
             print("error converting to vector form")
 
 num_output_classes = 11
-train_reader = read_video(os.path.join('D:/cognitive/sports/UCF11_DATA', 'train_map.csv'), num_output_classes, True)
-test_reader  = read_video(os.path.join('D:/cognitive/sports/UCF11_DATA', 'test_map.csv'), num_output_classes, True)
+train_reader = read_video(os.path.join('UCF11_data', 'train_map.csv'), num_output_classes, True)
+test_reader  = read_video(os.path.join('UCF11_dta', 'test_map.csv'), num_output_classes, True)
 
 import numpy
-numpy.save('D:/cognitive/sports/train_data.npy', train_reader[0])
+numpy.save('UCF11_data', train_reader[0])
 
-numpy.save('D:/cognitive/sports/train_label.npy', train_reader[1])
+numpy.save('UCF11_data', train_reader[1])
 
-numpy.save('D:/cognitive/sports/test_data.npy', test_reader[0])
+numpy.save('UCF11_data', test_reader[0])
 
-numpy.save('D:/cognitive/sports/test_label.npy', test_reader[1])
+numpy.save('UCF11_data', test_reader[1])
