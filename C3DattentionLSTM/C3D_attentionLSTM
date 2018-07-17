@@ -499,7 +499,7 @@ X = np.array(vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
 X[0] = np.array([1])
 print(np.array([X]))
 
-output = model.predict_on_batch(np.array([X]))
+output = model.predict_on_batch(X)
 
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
