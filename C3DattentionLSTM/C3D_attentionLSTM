@@ -417,7 +417,7 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 
 model.add(TimeDistributed(Dropout(0.5)))
 model.add(TimeDistributed(Flatten()))
-'''
+
 
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
