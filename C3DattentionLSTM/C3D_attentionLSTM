@@ -492,8 +492,8 @@ while True:
     vid.append(cv2.resize(img, (171, 128)))
 vid = np.array(vid, dtype=np.float32)
 
-X = np.array(vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
-X = np.array(1, X)
+X = np.array(vid[:, 2000:2016, 8:120, 30:142, :].transpose((4, 3, 0, 1, 2)))
+
 print(X)
 
 
