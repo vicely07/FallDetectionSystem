@@ -148,6 +148,9 @@ class AttentionLSTM(Wrapper):
         else:
             return last_output
 '''
+------------------------------------------------------------------Attention with context 2----------------------------------------------
+from keras.engine.topology import Layer
+
 def dot_product(x, kernel):
 
     """
