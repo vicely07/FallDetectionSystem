@@ -469,7 +469,7 @@ model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
 model.add(AttentionLSTM(recurrent.LSTM(24, consume_less='gpu', return_sequences=True)))
 '''
-model.add(recurrent.LSTM(24, consume_less='gpu', return_sequences=True))
+model.add(recurrent.LSTM(24, consume_less='mem', return_sequences=True))
 model.add(AttentionWithContext())
 '''
 model.add(Dense(487, activation='softmax'))
