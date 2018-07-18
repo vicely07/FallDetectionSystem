@@ -173,6 +173,7 @@ model.add(TimeDistributed(Convolution3D(64, 3, 3, 3, activation='relu', border_m
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1')))
 
+model.add(TimeDistributed(Dropout(0.5)))
 
 
 # 2nd layer group
@@ -183,6 +184,7 @@ model.add(TimeDistributed(Convolution3D(128, 3, 3, 3, activation='relu', border_
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool2')))
 
+model.add(TimeDistributed(Dropout(0.5)))
 
 
 # 3rd layer group
@@ -195,7 +197,7 @@ model.add(TimeDistributed(Convolution3D(256, 3, 3, 3, activation='relu', border_
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool3')))
 
-
+model.add(TimeDistributed(Dropout(0.5)))
 
 # 4th layer group
 
@@ -207,7 +209,7 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu',border_m
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool4')))
 
-
+model.add(TimeDistributed(Dropout(0.5)))
 
 # 5th layer group
 
@@ -220,7 +222,7 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
 
 model.add(TimeDistributed(Dropout(0.5)))
-model.add(TimeDistributed(Flatten()))
+
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
 import caffe_pb2 as caffe
@@ -265,16 +267,24 @@ json_string = model.to_json()
 with open('sports1M_model.json', 'w') as f:
     f.write(json_string)
 #-------------------------------------------------------Test-------------------------------------------------------------------------
+
 from keras.models import model_from_json
 #------------------------------------------------Attention LSTM layer---------------------------------------------------------
+
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
+'''
+model.add(TimeDistributed(Flatten()))
+model.add(TimeDistributed(AttentionLSTM(recurrent.LSTM(24, return_sequences=True, consume_less='gpu'))))
 
-model.add(AttentionLSTM(recurrent.LSTM(24, return_sequences=True, consume_less='gpu')))
-
-model.add(Dense(487, activation='softmax'))
+model.add(TimeDistributed(Dense(487, activation='softmax')))
 sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+'''
+model.add(Flatten())
+model.add(Dense(512, activation='sigmoid'))
+model.add(Dropout(0.5))
+model.add(Dense(11, activation='softmax'))
 model.summary()
 #------------------------------------------------------------Train set--------------------------------------------------------------------
 import numpy
@@ -286,7 +296,7 @@ train_l = numpy.load('train_label.npy')
 test_d = numpy.load('test_data.npy')
 
 test_l = numpy.load('test_label.npy')
-'''
+
 history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130, nb_epoch=100, verbose=1, shuffle=True)
 
 def save_history(history):
@@ -304,7 +314,7 @@ def save_history(history):
 #plot_history(history)
 save_history(history)
 #model.evaluate(test_d, test_l, verbose=1)
-'''
+
 model_json = model.to_json()
    
 with open( 'ucf11_3dcnnmodel.json', 'w') as json_file:
