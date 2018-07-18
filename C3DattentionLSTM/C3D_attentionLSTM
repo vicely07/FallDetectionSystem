@@ -283,7 +283,7 @@ model.add(TimeDistributed(Dense(487, activation='softmax')))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 model.summary()
-
+'''
 #------------------------------------------------------------Train set--------------------------------------------------------------------
 import numpy
 
@@ -351,16 +351,7 @@ output = model.predict_on_batch(X)
 
 #X = np.reshape(X, (X[0],1, X[1]))
 
-
-#train_d = np.array('X')
-
-train_l = labels
-loss, acc = model.evaluate(train_d, train_l, verbose=1)
-print('Test loss:', loss)
-print('Test accuracy:', acc)
-
-
+output = model.predict_on_batch(np.array([X]))
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(labels[output[0].argmax()]))
-'''
