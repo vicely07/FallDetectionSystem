@@ -283,7 +283,7 @@ model.add(TimeDistributed(Dense(487, activation='softmax')))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 model.summary()
-'''
+
 #------------------------------------------------------------Train set--------------------------------------------------------------------
 import numpy
 
