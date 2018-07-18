@@ -224,7 +224,7 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 
 model.add(TimeDistributed(Dropout(0.5)))
 
-
+'''
 #----------------------------------------------------------Load parameter-------------------------------------------------------
 import caffe_pb2 as caffe
 import numpy as np
@@ -274,7 +274,7 @@ from keras.models import model_from_json
 
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
-
+'''
 model.add(TimeDistributed(Flatten()))
 model.add(AttentionLSTM(recurrent.LSTM(24, return_sequences=True, consume_less='gpu')))
 
@@ -322,6 +322,7 @@ model.save_weights( 'ucf11_3dcnnmodel.hd5')
 loss, acc = model.evaluate(test_d, test_l, verbose=1)
 print('Test loss:', loss)
 print('Test accuracy:', acc)
+
 #-------------------------------------------------------------Test set--------------------------------------------------------------------
 '''
 with open('labels.txt', 'r') as f:
