@@ -211,7 +211,7 @@ def train_model(train_data,train_labels,validation_data,validation_labels):
 
   model = Sequential()
   model.add(AttentionLSTM(LSTM(256,dropout=0.2,input_shape=(train_data.shape[1],
-                     train_data.shape[2]), consume_less='gpu'))
+                     train_data.shape[2]), consume_less='gpu')))
   model.add(Dense(1024, activation='relu'))
   model.add(Dropout(0.5))
   model.add(Dense(5, activation='softmax'))
