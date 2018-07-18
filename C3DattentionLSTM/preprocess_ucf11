@@ -31,7 +31,6 @@ def generate_and_save_labels():
 
 
 #----------------------------------------------------------
-from __future__ import print_function
 
 if __name__ == "__main__":
 
