@@ -183,9 +183,9 @@ def bring_data_from_directory():
 
 def load_VGG16_model():
   base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224,224,3))
-  print "Model loaded..!"
-  print base_model.summary()
-  return base_model
+  print("Model loaded..!")
+  print(base_model.summary())
+  return(base_model)
 
 def extract_features_and_store(train_generator,validation_generator,base_model):
 
