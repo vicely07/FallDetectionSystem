@@ -381,7 +381,7 @@ print(model.summary())
 '''
 #train_d, train_l, test_d, test_l = train_test_split(X, Y, test_size=0.2, random_state=43)
 
-history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130,epochs=100, verbose=1, shuffle=True)
+history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130, nb_epoch=100, verbose=1, shuffle=True)
 plot_history(history)
 save_history(history)
 #model.evaluate(test_d, test_l, verbose=1)
