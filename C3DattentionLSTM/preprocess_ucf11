@@ -14,9 +14,16 @@ import sys
 import argparse
 import csv
 import numpy as np
-
 import imageio
-
+imageio.plugins.ffmpeg.download()
+from random import randint
+from PIL import Image
+'''
+1) Download dataset and extract files. It consists of 3 second clips and annotations in XML format
+2) Load main folder in python list with data as path to video and label as category it belongs
+3) Split python list into training and test sets (80-20)
+4) Store the 2 lists in csv files
+'''
 def load_groups(input_folder):
     '''
     Load the list of sub-folders into a python list with their
