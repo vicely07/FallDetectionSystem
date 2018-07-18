@@ -1,4 +1,138 @@
 
+
+#---------------------------------------------3DCNN model---------------------------------------------------------------
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.models import Sequential
+
+from keras.layers.convolutional import Convolution3D, MaxPooling3D
+# Define model
+model = Sequential()
+from numpy import array
+input_shape=(16, 112, 112, 3) # l, h, w, c
+
+model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1'), input_shape=input_shape)
+model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1'))
+
+# 2nd layer group
+
+model.add(Convolution3D(128, 3, 3, 3, activation='relu', border_mode='same', name='conv2'))
+model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool2'))
+
+# 3rd layer group
+
+model.add(Convolution3D(256, 3, 3, 3, activation='relu', border_mode='same', name='conv3a'))
+model.add(Convolution3D(256, 3, 3, 3, activation='relu', border_mode='same', name='conv3b'))
+model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool3'))
+
+# 4th layer group
+
+model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv4a'))
+model.add(Convolution3D(512, 3, 3, 3, activation='relu',border_mode='same', name='conv4b'))
+model.add(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool4'))
+
+# 5th layer group
+
+model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5a'))
+model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b'))
+model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
+#----------------------------------------------------------Load parameter-------------------------------------------------------
+
+import caffe_pb2 as caffe
+
+import numpy as np
+
+
+
+p = caffe.NetParameter()
+
+p.ParseFromString(
+
+    open('conv3d_deepnetA_sport1m_iter_1900000', 'rb').read()
+
+)
+
+
+
+def rot90(W):
+
+    for i in range(W.shape[0]):
+
+        for j in range(W.shape[1]):
+
+            for k in range(W.shape[2]):
+
+                W[i, j, k] = np.rot90(W[i, j, k], 2)
+
+    return W
+
+
+
+params = []
+
+conv_layers_indx = [1, 4, 7, 9, 12, 14, 17, 19]
+
+#fc_layers_indx = [22, 25, 28]
+
+
+
+for i in conv_layers_indx:
+
+    layer = p.layers[i]
+
+    weights_b = np.array(layer.blobs[1].data, dtype=np.float32)
+
+    weights_p = np.array(layer.blobs[0].data, dtype=np.float32).reshape(
+
+        layer.blobs[0].num, layer.blobs[0].channels, layer.blobs[0].length,
+
+        layer.blobs[0].height, layer.blobs[0].width
+
+    )
+
+    weights_p = np.transpose(weights_p, (2, 3, 4, 1, 0))
+
+    weights_p = rot90(weights_p)
+
+    params.append([weights_p, weights_b])
+
+
+
+
+
+model_layers_indx = [0, 2, 4, 5, 7, 8, 10, 11]  
+
+for i, j in zip(model_layers_indx, range(11)):
+
+    model.layers[i].set_weights(params[j])
+
+
+
+import h5py
+
+
+
+model.save_weights('sports1M_weights.h5', overwrite=True)
+
+json_string = model.to_json()
+
+with open('sports1M_model.json', 'w') as f:
+
+    f.write(json_string)
+
+#-------------------------------------------------------Test-------------------------------------------------------------------------
+
+
+
+from keras.models import model_from_json
+
+#------------------------------------------------Attention LSTM layer---------------------------------------------------------
+
+model = model_from_json(open('sports1M_model.json', 'r').read())
+
+C3DSport1Model = model.load_weights('sports1M_weights.h5')
+
+#-------------------------------------Attention Layer-----------------------------------------------------------------------------
 from keras import backend as K
 from keras.engine import InputSpec
 from keras.layers import LSTM, activations, Wrapper, Recurrent, recurrent
@@ -181,8 +315,8 @@ def bring_data_from_directory():
           classes=['class_1','class_2','class_3','class_4','class_5'])
   return train_generator,validation_generator
 
-def load_VGG16_model():
-  base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224,224,3))
+def load_C3D_model():
+  base_model = C3DSport1Model
   print("Model loaded..!")
   print(base_model.summary())
   return(base_model)
@@ -210,16 +344,14 @@ def train_model(train_data,train_labels,validation_data,validation_labels):
       checkpoint to store the best weights'''
 
   model = Sequential()
-  model.add(AttentionLSTM(LSTM(256,dropout=0.2,input_shape=(train_data.shape[1],
+  model.add(AttentionLSTM(LSTM(24,dropout=0.2,input_shape=(train_data.shape[1],
                      train_data.shape[2]), consume_less='gpu')))
-  model.add(Dense(1024, activation='relu'))
-  model.add(Dropout(0.5))
-  model.add(Dense(5, activation='softmax'))
-  sgd = SGD(lr=0.00005, decay = 1e-6, momentum=0.9, nesterov=True)
+  model.add(Dense(11, activation='softmax'))
+  sgd = SGD(lr=0.003, decay = 1e-6, momentum=0.2, nesterov=True)
   model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
   #model.load_weights('video_1_LSTM_1_512.h5')
   callbacks = [ EarlyStopping(monitor='val_loss', patience=10, verbose=0), ModelCheckpoint('video_1_LSTM_1_1024.h5', monitor='val_loss', save_best_only=True, verbose=0) ]
-  nb_epoch = 500
+  nb_epoch = 300
   model.fit(train_data,train_labels,validation_data=(validation_data,validation_labels),batch_size=batch_size,nb_epoch=nb_epoch,callbacks=callbacks,shuffle=True,verbose=1)
   
   loss, acc = model.evaluate(test_d, test_l, verbose=1)
@@ -232,7 +364,7 @@ def train_model(train_data,train_labels,validation_data,validation_labels):
 
 if __name__ == '__main__':
   train_generator,validation_generator = bring_data_from_directory()
-  base_model = load_VGG16_model()
+  base_model = load_C3D_model()
   train_data,train_labels,validation_data,validation_labels = extract_features_and_store(train_generator,validation_generator,base_model)
   train_model(train_data,train_labels,validation_data,validation_labels)
   
