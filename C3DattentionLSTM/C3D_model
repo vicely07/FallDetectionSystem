@@ -3,19 +3,13 @@
 #---------------------------------------------model---------------------------------------------------------------
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers.advanced_activations import LeakyReLU
-from keras.losses import categorical_crossentropy
 from keras.models import Sequential
-from keras.optimizers import Adam
-from keras.utils import np_utils
-from keras.utils.vis_utils import plot_model
-from sklearn.model_selection import train_test_split
-from keras.utils.vis_utils import plot_model
+
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
 # Define model
 model = Sequential()
 from numpy import array
-input_shape=(20, 16, 112, 112, 3) # l, h, w, c
+input_shape=(16, 112, 112, 3) # l, h, w, c
 
 model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1'), input_shape=input_shape)
 model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1'))
