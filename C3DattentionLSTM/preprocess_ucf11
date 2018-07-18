@@ -112,8 +112,8 @@ def generate_and_save_labels():
     groups = load_groups('./action_youtube_naudio')
     train, test = split_data(groups, '.avi')
 
-    su.write_to_csv(train, os.path.join('.', 'train_map.csv'))
-    su.write_to_csv(test, os.path.join('.', 'test_map.csv'))
+    write_to_csv(train, os.path.join('.', 'train_map.csv'))
+    write_to_csv(test, os.path.join('.', 'test_map.csv'))
 
 
 #----------------------------------------------------------
