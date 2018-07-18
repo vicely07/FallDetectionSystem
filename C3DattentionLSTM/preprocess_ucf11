@@ -82,6 +82,20 @@ def split_data(groups, file_ext):
                         test.append([video_file_path, group[1]])
 
     return train, test
+def write_to_csv(items, file_path):
+    '''
+    Write file path and its target pair in a CSV file format.
+    '''
+    if sys.version_info[0] < 3:
+        with open(file_path, 'wb') as csv_file:
+            writer = csv.writer(csv_file, delimiter=',')
+            for item in items:
+                writer.writerow(item)
+    else:
+        with open(file_path, 'w', newline='') as csv_file:
+            writer = csv.writer(csv_file, delimiter=',')
+            for item in items:
+                writer.writerow(item)
 
 def download_and_extract(src):
     print ('Downloading ' + src)
