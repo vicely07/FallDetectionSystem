@@ -129,3 +129,122 @@ if __name__ == "__main__":
     generate_and_save_labels()
 
     print ('Done.')
+'''
+1) Read video from path in csv, extract frames
+2) Convert frames to numpy arrays and save in file
+3) Upload file to AWS to pass it to model for training
+'''
+def select_features(video_file, sequence_length, is_training,width,height):
+        '''
+        Select a sequence of frames from video_file and return them as
+        a Tensor.
+        '''
+        try:
+            video_reader = imageio.get_reader(video_file, 'ffmpeg')
+            num_frames   = len(video_reader)
+            if sequence_length > num_frames:
+                raise ValueError('Sequence length {} is larger then the total number of frames {} in {}.'.format(sequence_length, num_frames, video_file))
+
+            # select which sequence frames to use.
+            step = 1
+            expanded_sequence = sequence_length
+            if num_frames > 2*sequence_length:
+                step = 2
+                expanded_sequence = 2*sequence_length
+
+            seq_start = int(num_frames/2) - int(expanded_sequence/2)
+            if is_training:
+                seq_start = randint(0, num_frames - expanded_sequence)
+
+            frame_range = [seq_start + step*i for i in range(sequence_length)]            
+            video_frames = []
+            for frame_index in frame_range:
+                video_frames.append(read_frame(video_reader.get_data(frame_index),width,height))
+        
+            return np.stack(video_frames, axis=1)
+        except:
+            print("Error reading video")
+
+def read_frame(data,width,height):
+        '''
+        Based on http://vlg.cs.dartmouth.edu/c3d/c3d_video.pdf
+        We resize the image to 128x171 first, then selecting a 112x112
+        crop.
+        '''
+        try:
+            if (width >= 171) or (height >= 128):
+                raise ValueError("Target width need to be less than 171 and target height need to be less than 128.")
+        
+            image = Image.fromarray(data)
+            image.thumbnail((171, 128), Image.ANTIALIAS)
+        
+            center_w = image.size[0] / 2
+            center_h = image.size[1] / 2
+
+            image = image.crop((center_w - width  / 2,
+                                center_h - height / 2,
+                                center_w + width  / 2,
+                                center_h + height / 2))
+        
+            norm_image = np.array(image, dtype=np.float32)
+            norm_image -= 127.5
+            norm_image /= 127.5
+
+            # (channel, height, width)
+            return np.ascontiguousarray(np.transpose(norm_image, (2, 0, 1)))
+        except:
+            print("Error reading frame")
+
+def read_video(map_file, label_count, is_training, limit_epoch_size=sys.maxsize):
+        '''
+        Load video file paths and their corresponding labels.
+        '''
+        width           = 112
+        height          = 112
+        sequence_length = 16
+        channel_count   = 3
+        is_training     = is_training
+        video_files     = []
+        targets         = []
+        batch_start     = 0
+
+        try:
+            map_file_dir = os.path.dirname(map_file)
+
+            with open(map_file) as csv_file:
+                data = csv.reader(csv_file)
+                for row in data:
+                    video_files.append(os.path.join(map_file_dir, row[0]))
+                    target = [0.0] * label_count
+                    target[int(row[1])] = 1.0
+                    targets.append(target)
+
+            indices = np.arange(len(video_files))
+            if is_training:
+                np.random.shuffle(indices)
+            epoch_size = min(len(video_files), limit_epoch_size)
+            vectored_video_files = []
+            for video_file in video_files:
+                vectored_video_file = select_features(video_file, sequence_length, is_training,width,height)
+                print(vectored_video_file)
+                vectored_video_files.append(vectored_video_file)
+            
+            return vectored_video_files,targets
+        except:
+            print("error converting to vector form")
+
+num_output_classes = 11
+train_reader = read_video(os.path.join('UCF11_data', 'train_map.csv'), num_output_classes, True)
+test_reader  = read_video(os.path.join('UCF11_data', 'test_map.csv'), num_output_classes, True)
+type(test_reader)
+
+import numpy
+
+numpy.save('train_data.npy', train_reader[0])
+
+numpy.save('train_label.npy', train_reader[1])
+
+numpy.save('test_data.npy', test_reader[0])
+
+numpy.save('test_label.npy', test_reader[1])
+
