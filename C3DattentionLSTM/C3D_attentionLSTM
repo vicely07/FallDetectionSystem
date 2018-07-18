@@ -243,7 +243,7 @@ def rot90(W):
 
 params = []
 conv_layers_indx = [1, 4, 7, 9, 12, 14, 17, 19]
-fc_layers_indx = [22, 25, 28]
+#fc_layers_indx = [22, 25, 28]
 
 for i in conv_layers_indx:
     layer = p.layers[i]
@@ -355,3 +355,4 @@ output = model.predict_on_batch(X)
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(labels[output[0].argmax()]))
+'''
