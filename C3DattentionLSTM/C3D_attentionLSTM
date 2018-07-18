@@ -286,7 +286,7 @@ train_l = numpy.load('train_label.npy')
 test_d = numpy.load('test_data.npy')
 
 test_l = numpy.load('test_label.npy')
-history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130,epochs=100, verbose=1, shuffle=True)
+history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130, nb_epoch=100, verbose=1, shuffle=True)
 
 def save_history(history):
     loss = history.history['loss']
