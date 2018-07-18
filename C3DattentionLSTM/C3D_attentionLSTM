@@ -1,44 +1,4 @@
 
-from keras.layers import (Activation, Conv3D, Dense, Dropout, Flatten,
-                          MaxPooling3D)
-from keras.layers.advanced_activations import LeakyReLU
-from keras.models import Sequential
-'''
-from keras.losses import categorical_crossentropy
-from keras.optimizers import Adam
-from keras.utils import np_utils
-from keras.utils.vis_utils import plot_model
-from sklearn.model_selection import train_test_split
-from keras.utils.vis_utils import plot_model
-'''
-# Define model
-model = Sequential()
-model.add(Conv3D(128, kernel_size=(3, 3, 3), input_shape=(
-train_d.shape[1:]), border_mode='same'))
-model.add(Activation('relu'))
-model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
-model.add(Activation('softmax'))
-model.add(MaxPooling3D(pool_size=(3, 3, 3), border_mode='same'))
-model.add(Dropout(0.5))
-
-model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
-model.add(Activation('relu'))
-model.add(Conv3D(64, kernel_size=(3, 3, 3), border_mode='same'))
-model.add(Activation('softmax'))
-model.add(MaxPooling3D(pool_size=(3, 3, 3), border_mode='same'))
-model.add(Dropout(0.5))
-
-
-model.add(Flatten())
-model.add(Dense(512, activation='sigmoid'))
-model.add(Dropout(0.5))
-model.add(Dense(11, activation='softmax'))
-
-model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
-model.summary()
-
-
-'''
 #---------------------------------------Creating attention model-----------------------------------------------------------------
 
 from keras import backend as K
@@ -323,7 +283,7 @@ model.add(TimeDistributed(Dense(487, activation='softmax')))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 model.summary()
-'''
+
 #------------------------------------------------------------Train set--------------------------------------------------------------------
 import numpy
 
