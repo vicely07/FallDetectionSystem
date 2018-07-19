@@ -316,9 +316,9 @@ def bring_data_from_directory():
 def load_C3D_model():
   from keras.models import model_from_json
 
-  model = model_from_json(open('sports1M_model.json', 'r').read())
+  base_model = model_from_json(open('sports1M_model.json', 'r').read())
 
-  base_model = model.load_weights('sports1M_weights.h5')
+  base_model.load_weights('sports1M_weights.h5')
   
   print("Model loaded..!")
   print(base_model.summary())
