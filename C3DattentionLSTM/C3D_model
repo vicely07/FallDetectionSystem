@@ -66,8 +66,9 @@ model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', nam
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
 model.add(Dropout(0.5))
 
-#model.add(Flatten())
-model.compile(loss='sparse_categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
+model.add(Flatten())
+model.add(Dense(11, activation='softmax'))
+model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
 model.summary()
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
