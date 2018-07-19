@@ -122,7 +122,24 @@ with open('sports1M_model.json', 'w') as f:
     f.write(json_string)
 
 #-------------------------------------------------------Test-------------------------------------------------------------------------
+def bring_data_from_directory():
+  datagen = ImageDataGenerator(rescale=1. / 255)
+  train_generator = datagen.flow_from_directory(
+          'train',
+          target_size=(224, 224),
+          batch_size=batch_size,
+          class_mode='categorical',  # this means our generator will only yield batches of data, no labels
+          shuffle=True,
+          classes=['class_1','class_2','class_3','class_4','class_5'])
 
+  validation_generator = datagen.flow_from_directory(
+          'validate',
+          target_size=(224, 224),
+          batch_size=batch_size,
+          class_mode='categorical',  # this means our generator will only yield batches of data, no labels
+          shuffle=True,
+          classes=['class_1','class_2','class_3','class_4','class_5'])
+  return train_generator,validation_generator
 def load_C3D_model():
   from keras.models import model_from_json
 
@@ -173,4 +190,5 @@ def load_C3D_model():
   np.save(open('video_x_validate_VGG16.npy', 'w'),x_generator)
   np.save(open('video_y_validate_VGG16.npy','w'),y_lable)
   
+train_generator,validation_generator = bring_data_from_directory()  
 load_C3D_model()
