@@ -195,14 +195,53 @@ def load_C3D_model():
   return(base_model)
 
 def extract_features_and_store(train_generator,validation_generator,base_model):
+  #test set
+  x_generator = None
+  y_lable = None
+  batch = 0
+  for x,y in train_generator:
+      if batch == (56021/batch_size):
+          break
+      print "predict on batch:",batch
+      batch+=1
+      if x_generator==None:
+         x_generator = base_model.predict_on_batch(x)
+         y_lable = y
+         print y
+      else:
+         x_generator = np.append(x_generator,base_model.predict_on_batch(x),axis=0)
+         y_lable = np.append(y_lable,y,axis=0)
+  x_generator,y_lable = shuffle(x_generator,y_lable)
+  np.save(open('video_x_VGG16.npy', 'w'),x_generator)
+  np.save(open('video_y_VGG16.npy','w'),y_lable)
+  batch = 0
+  #validate
+    batch = 0
+  x_generator = None
+  y_lable = None
+  for x,y in validation_generator:
+      if batch == (3974/batch_size):
+          break
+      print "predict on batch validate:",batch
+      batch+=1
+      if x_generator==None:
+         x_generator = base_model.predict_on_batch(x)
+         y_lable = y
+      else:
+         x_generator = np.append(x_generator,base_model.predict_on_batch(x),axis=0)
+         y_lable = np.append(y_lable,y,axis=0)
+  x_generator,y_lable = shuffle(x_generator,y_lable)
+  np.save(open('video_x_validate_VGG16.npy', 'w'),x_generator)
+  np.save(open('video_y_validate_VGG16.npy','w'),y_lable)
 
-  train_data = np.load('train_data.npy')
-  train_labels = np.load('train_label.npy')
+  #Load parameters
+  train_data = np.load(open('video_x_VGG16.npy'))
+  train_labels = np.load(open('video_y_VGG16.npy'))
   train_data,train_labels = shuffle(train_data,train_labels)
-  validation_data = np.load('test_data.npy')
-  validation_labels = np.load('test_label.npy')
+  validation_data = np.load(open('video_x_validate_VGG16.npy'))
+  validation_labels = np.load(open('video_y_validate_VGG16.npy'))
   validation_data,validation_labels = shuffle(validation_data,validation_labels)
-
+  
   train_data = train_data.reshape(train_data.shape[0],
                      train_data.shape[1] * train_data.shape[2],
                      train_data.shape[3])
@@ -215,7 +254,8 @@ def extract_features_and_store(train_generator,validation_generator,base_model):
 def train_model(train_data,train_labels,validation_data,validation_labels):
   ''' used fully connected layers, SGD optimizer and 
       checkpoint to store the best weights'''
-
+      
+  #LSTM model
   model = Sequential()
   model.add(AttentionLSTM(LSTM(24,dropout=0.2,input_shape=(train_data.shape[1],
                      train_data.shape[2]), consume_less='gpu')))
