@@ -202,12 +202,12 @@ def extract_features_and_store(train_generator,validation_generator,base_model):
   for x,y in train_generator:
       if batch == (56021/batch_size):
           break
-      print "predict on batch:",batch
+      print("predict on batch:",batch)
       batch+=1
       if x_generator==None:
          x_generator = base_model.predict_on_batch(x)
          y_lable = y
-         print y
+         print(y)
       else:
          x_generator = np.append(x_generator,base_model.predict_on_batch(x),axis=0)
          y_lable = np.append(y_lable,y,axis=0)
@@ -222,7 +222,7 @@ def extract_features_and_store(train_generator,validation_generator,base_model):
   for x,y in validation_generator:
       if batch == (3974/batch_size):
           break
-      print "predict on batch validate:",batch
+      print("predict on batch validate:",batch)
       batch+=1
       if x_generator==None:
          x_generator = base_model.predict_on_batch(x)
