@@ -58,6 +58,9 @@ model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', nam
 model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', name='conv5b'))
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
 model.add(Flatten())
+model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
+model.summary()
+
 #----------------------------------------------------------Load parameter-------------------------------------------------------
 '''
 import caffe_pb2 as caffe
