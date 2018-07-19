@@ -1,3 +1,4 @@
+#
 
 import numpy
 
@@ -30,7 +31,8 @@ from keras.layers.convolutional import Convolution3D, MaxPooling3D
 # Define model
 model = Sequential()
 from numpy import array
-input_shape=(16, 112, 112, 3) # l, h, w, c
+#input_shape=(16, 112, 112, 3) # l, h, w, c
+input_shape=(3, 16, 112, 112) # c, l, h, w
 
 model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1', input_shape=input_shape))
 model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1'))
