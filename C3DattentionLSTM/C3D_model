@@ -1,4 +1,4 @@
-'''
+
 import numpy
 
 train_d = numpy.load('train_data.npy')
@@ -23,11 +23,13 @@ def save_history(history):
         for i in range(nb_epoch):
             fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
-'''
+
 #---------------------------------------------3DCNN model---------------------------------------------------------------
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
 from keras.models import Sequential
+rom keras.losses import categorical_crossentropy
+from keras.optimizers import Adam
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
 # Define model
@@ -69,9 +71,9 @@ model.add(Dropout(0.5))
 
 model.add(Flatten())
 model.add(Dense(11, activation='softmax'))
-model.compile(loss='sparse_categorical_crossentropy',optimizer='Adam', metrics=['accuracy'])
+model.compile(loss=categorical_crossentropy, optimizer=Adam(), metrics=['accuracy'])
 model.summary()
-
+'''
 #----------------------------------------------------------Load parameter-------------------------------------------------------
 
 import caffe_pb2 as caffe
