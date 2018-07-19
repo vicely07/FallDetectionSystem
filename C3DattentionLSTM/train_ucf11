@@ -216,7 +216,7 @@ def extract_features_and_store(train_generator,validation_generator,base_model):
   np.save(open('video_y_VGG16.npy','w'),y_lable)
   batch = 0
   #validate
-    batch = 0
+  batch = 0
   x_generator = None
   y_lable = None
   for x,y in validation_generator:
