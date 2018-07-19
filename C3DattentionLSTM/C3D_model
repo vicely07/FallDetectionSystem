@@ -9,6 +9,18 @@ test_d = numpy.load('test_data.npy')
 
 test_l = numpy.load('test_label.npy')
 
+def save_history(history):
+    loss = history.history['loss']
+    acc = history.history['acc']
+    val_loss = history.history['val_loss']
+    val_acc = history.history['val_acc']
+    nb_epoch = len(acc)
+
+    with open('result.txt', 'w') as fp:
+        fp.write('epoch\tloss\tacc\tval_loss\tval_acc\n')
+        for i in range(nb_epoch):
+            fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
+                i, loss[i], acc[i], val_loss[i], val_acc[i]))
 #---------------------------------------------3DCNN model---------------------------------------------------------------
 from keras.models import Sequential
 from keras.layers import Dense, Flatten
@@ -231,3 +243,4 @@ def load_C3D_model():
   
 train_generator,validation_generator = bring_data_from_directory()  
 load_C3D_model()
+'''
