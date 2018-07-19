@@ -196,11 +196,11 @@ def load_C3D_model():
 
 def extract_features_and_store(train_generator,validation_generator,base_model):
 
-  train_data = np.load(open('train_data.npy'))
-  train_labels = np.load(open('train_label.npy'))
+  train_data = np.load('train_data.npy')
+  train_labels = np.load('train_label.npy')
   train_data,train_labels = shuffle(train_data,train_labels)
-  validation_data = np.load(open('test_data.npy'))
-  validation_labels = np.load(open('test_label.npy'))
+  validation_data = np.load('test_data.npy')
+  validation_labels = np.load('test_label.npy')
   validation_data,validation_labels = shuffle(validation_data,validation_labels)
 
   train_data = train_data.reshape(train_data.shape[0],
