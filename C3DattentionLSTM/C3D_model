@@ -2,7 +2,7 @@
 
 #---------------------------------------------3DCNN model---------------------------------------------------------------
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Flatten
 from keras.models import Sequential
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
