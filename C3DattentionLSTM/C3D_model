@@ -67,7 +67,7 @@ model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='vali
 model.add(Dropout(0.5))
 
 #model.add(Flatten())
-model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
+model.compile(loss='sparse_categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
 model.summary()
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
