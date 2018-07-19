@@ -214,7 +214,7 @@ def extract_features_and_store(train_generator,validation_generator,base_model):
   x_generator,y_lable = shuffle(x_generator,y_lable)
   np.save(open('video_x_VGG16.npy', 'w'),x_generator)
   np.save(open('video_y_VGG16.npy','w'),y_lable)
-  batch = 0
+  
   #validate
   batch = 0
   x_generator = None
