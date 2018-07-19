@@ -123,3 +123,54 @@ with open('sports1M_model.json', 'w') as f:
 
 #-------------------------------------------------------Test-------------------------------------------------------------------------
 
+def load_C3D_model():
+  from keras.models import model_from_json
+
+  base_model = model_from_json(open('sports1M_model.json', 'r').read())
+
+  base_model.load_weights('sports1M_weights.h5')
+  
+  print("Model loaded..!")
+  print(base_model.summary())
+  
+
+  #test set
+  x_generator = None
+  y_lable = None
+  batch = 0
+  for x,y in train_generator:
+      if batch == (56021/batch_size):
+          break
+      print("predict on batch:",batch)
+      batch+=1
+      if x_generator==None:
+         x_generator = base_model.predict_on_batch(x)
+         y_lable = y
+         print(y)
+      else:
+         x_generator = np.append(x_generator,base_model.predict_on_batch(x),axis=0)
+         y_lable = np.append(y_lable,y,axis=0)
+  x_generator,y_lable = shuffle(x_generator,y_lable)
+  np.save(open('video_x_VGG16.npy', 'w'),x_generator)
+  np.save(open('video_y_VGG16.npy','w'),y_lable)
+  
+  #validate
+  batch = 0
+  x_generator = None
+  y_lable = None
+  for x,y in validation_generator:
+      if batch == (3974/batch_size):
+          break
+      print("predict on batch validate:",batch)
+      batch+=1
+      if x_generator==None:
+         x_generator = base_model.predict_on_batch(x)
+         y_lable = y
+      else:
+         x_generator = np.append(x_generator,base_model.predict_on_batch(x),axis=0)
+         y_lable = np.append(y_lable,y,axis=0)
+  x_generator,y_lable = shuffle(x_generator,y_lable)
+  np.save(open('video_x_validate_VGG16.npy', 'w'),x_generator)
+  np.save(open('video_y_validate_VGG16.npy','w'),y_lable)
+  
+load_C3D_model()
