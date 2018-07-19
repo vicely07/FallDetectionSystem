@@ -25,7 +25,7 @@ def save_history(history):
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
 #---------------------------------------------3DCNN model---------------------------------------------------------------
 from keras.models import Sequential
-from keras.layers import Dense, Flatten
+from keras.layers import Dense, Flatten, Dropout
 from keras.models import Sequential
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
