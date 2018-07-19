@@ -134,6 +134,8 @@ import numpy as np
 import glob,os
 from scipy.misc import imread,imresize
 
+batch_size = 128
+
 def bring_data_from_directory():
   datagen = ImageDataGenerator(rescale=1. / 255)
   train_generator = datagen.flow_from_directory(
