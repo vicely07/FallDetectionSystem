@@ -2,13 +2,13 @@
 
 import numpy
 
-train_d = numpy.load('train_data.npy')
+train_d = numpy.load('train_data.npy').reshape(1,2,3,0)
 
-train_l = numpy.load('train_label.npy')
+train_l = numpy.load('train_label.npy').reshape(1,2,3,0)
 
-test_d = numpy.load('test_data.npy')
+test_d = numpy.load('test_data.npy').reshape(1,2,3,0)
 
-test_l = numpy.load('test_label.npy')
+test_l = numpy.load('test_label.npy').reshape(1,2,3,0)
 
 def save_history(history):
     loss = history.history['loss']
