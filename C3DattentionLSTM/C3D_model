@@ -121,7 +121,19 @@ with open('sports1M_model.json', 'w') as f:
 
     f.write(json_string)
 
-#-------------------------------------------------------Test-------------------------------------------------------------------------
+#-------------------------------------------------------Load data-------------------------------------------------------------------------
+
+from keras import applications
+from keras.optimizers import SGD
+from sklearn.utils import shuffle
+from keras.preprocessing.image import ImageDataGenerator
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.applications.vgg16 import VGG16
+from keras.layers import LSTM
+import numpy as np
+import glob,os
+from scipy.misc import imread,imresize
+
 def bring_data_from_directory():
   datagen = ImageDataGenerator(rescale=1. / 255)
   train_generator = datagen.flow_from_directory(
