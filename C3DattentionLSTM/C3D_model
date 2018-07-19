@@ -68,7 +68,7 @@ model.add(Dropout(0.5))
 
 model.add(Flatten())
 model.add(Dense(11, activation='softmax'))
-model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
+model.compile(loss='sparse_categorical_crossentropy',optimizer='Adam', metrics=['accuracy'])
 model.summary()
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
