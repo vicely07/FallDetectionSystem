@@ -1,4 +1,4 @@
-
+'''
 import numpy
 
 train_d = numpy.load('train_data.npy')
@@ -23,6 +23,7 @@ def save_history(history):
         for i in range(nb_epoch):
             fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
+'''
 #---------------------------------------------3DCNN model---------------------------------------------------------------
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
@@ -72,7 +73,7 @@ model.compile(loss='sparse_categorical_crossentropy',optimizer='Adam', metrics=[
 model.summary()
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
-'''
+
 import caffe_pb2 as caffe
 
 import numpy as np
@@ -154,8 +155,9 @@ json_string = model.to_json()
 with open('sports1M_model.json', 'w') as f:
 
     f.write(json_string)
-'''
+
 #------------------------------------------------------Loading UCF11 data--------------------------------------------------------------------------
+'''
 history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130,epochs=100, verbose=1, shuffle=True)
 plot_history(history)
 save_history(history)
