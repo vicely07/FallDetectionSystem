@@ -343,12 +343,10 @@ while True:
     vid.append(cv2.resize(img, (171, 128)))
 vid = np.array(vid, dtype=np.float32)
 
-X = np.array(vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
-
-print(X)
-
-
-
+X = (vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
+X = np.array([X])
+output = np.append(1, X.shape)
+output = output.transpose((1,0,2,3,4))
 
 X = np.reshape(None, 16, 112, 112, 3)
 
