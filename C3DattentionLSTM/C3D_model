@@ -2,13 +2,13 @@
 import numpy
 
 train_d = numpy.load('train_data.npy')
-train_d = train_d.transpose((0,2,3,4,1))
+#train_d = train_d.transpose((0,2,3,4,1))
 train_l = numpy.load('train_label.npy')
-train_l = train_d.transpose((0,2,3,4,1))
+#train_l = train_d.transpose((0,2,3,4,1))
 test_d = numpy.load('test_data.npy')
-test_d = train_d.transpose((0,2,3,4,1))
+#test_d = train_d.transpose((0,2,3,4,1))
 test_l = numpy.load('test_label.npy')
-test_l = train_d.transpose((0,2,3,4,1))
+#test_l = train_d.transpose((0,2,3,4,1))
 
 
 def save_history(history):
@@ -35,8 +35,8 @@ from keras.layers.convolutional import Convolution3D, MaxPooling3D
 # Define model
 model = Sequential()
 from numpy import array
-input_shape=(16, 112, 112, 3) # l, h, w, c
-#input_shape=(3, 16, 112, 112) # c, l, h, w
+#input_shape=(16, 112, 112, 3) # l, h, w, c
+input_shape=(3, 16, 112, 112) # c, l, h, w
 
 model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1', input_shape=input_shape))
 model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1'))
