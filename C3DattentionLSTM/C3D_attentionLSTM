@@ -311,7 +311,8 @@ print(X.shape)
 #output = np.append([-1], output)
 
 output = X[0].reshape((-1, 1, 16, 112, 112, 3))
-
+print(output.shape[0])
+print(output.shape)
 #output = output.reshape((-1, 1, 16, 112, 112, 3))
 
 #output = model.predict_on_batch(X)
