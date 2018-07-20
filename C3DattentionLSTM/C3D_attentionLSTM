@@ -224,7 +224,7 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 
 model.add(TimeDistributed(Dropout(0.5)))
 
-'''
+
 #----------------------------------------------------------Load parameter-------------------------------------------------------
 import caffe_pb2 as caffe
 import numpy as np
@@ -243,7 +243,6 @@ def rot90(W):
 
 params = []
 conv_layers_indx = [1, 4, 7, 9, 12, 14, 17, 19]
-#fc_layers_indx = [22, 25, 28]
 
 for i in conv_layers_indx:
     layer = p.layers[i]
@@ -270,7 +269,7 @@ with open('sports1M_model.json', 'w') as f:
 #-------------------------------------------------------Test-------------------------------------------------------------------------
 
 from keras.models import model_from_json
-#------------------------------------------------Attention LSTM layer---------------------------------------------------------
+#------------------------------------------------Add Attention LSTM layer---------------------------------------------------------
 
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
@@ -284,47 +283,7 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 
 model.summary()
 
-#------------------------------------------------------------Train set--------------------------------------------------------------------
-import numpy
-
-train_d = numpy.load('train_data.npy')
-
-train_l = numpy.load('train_label.npy')
-
-test_d = numpy.load('test_data.npy')
-
-test_l = numpy.load('test_label.npy')
-
-history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130, nb_epoch=100, verbose=1, shuffle=True)
-
-def save_history(history):
-    loss = history.history['loss']
-    acc = history.history['acc']
-    val_loss = history.history['val_loss']
-    val_acc = history.history['val_acc']
-    nb_epoch = len(acc)
-
-    with open('result.txt', 'w') as fp:
-        fp.write('epoch\tloss\tacc\tval_loss\tval_acc\n')
-        for i in range(nb_epoch):
-            fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
-                i, loss[i], acc[i], val_loss[i], val_acc[i]))
-#plot_history(history)
-save_history(history)
-#model.evaluate(test_d, test_l, verbose=1)
-
-model_json = model.to_json()
-   
-with open( 'ucf11_3dcnnmodel.json', 'w') as json_file:
-    json_file.write(model_json)
-model.save_weights( 'ucf11_3dcnnmodel.hd5')
-
-loss, acc = model.evaluate(test_d, test_l, verbose=1)
-print('Test loss:', loss)
-print('Test accuracy:', acc)
-
 #-------------------------------------------------------------Test set--------------------------------------------------------------------
-'''
 with open('labels.txt', 'r') as f:
     labels = [line.strip() for line in f.readlines()]
 print('Total labels: {}'.format(len(labels)))
@@ -354,4 +313,4 @@ output = model.predict_on_batch(X)
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(labels[output[0].argmax()]))
-'''
+
