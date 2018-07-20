@@ -174,7 +174,7 @@ model.add(TimeDistributed(Convolution3D(64, 3, 3, 3, activation='relu', border_m
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1')))
 
-model.add(TimeDistributed(Dropout(0.5)))
+#model.add(TimeDistributed(Dropout(0.5)))
 
 
 # 2nd layer group
@@ -185,7 +185,7 @@ model.add(TimeDistributed(Convolution3D(128, 3, 3, 3, activation='relu', border_
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool2')))
 
-model.add(TimeDistributed(Dropout(0.5)))
+#model.add(TimeDistributed(Dropout(0.5)))
 
 
 # 3rd layer group
@@ -198,7 +198,7 @@ model.add(TimeDistributed(Convolution3D(256, 3, 3, 3, activation='relu', border_
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool3')))
 
-model.add(TimeDistributed(Dropout(0.5)))
+#model.add(TimeDistributed(Dropout(0.5)))
 
 # 4th layer group
 
@@ -210,7 +210,7 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu',border_m
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 2, 2), strides=(2, 2, 2), border_mode='valid', name='pool4')))
 
-model.add(TimeDistributed(Dropout(0.5)))
+#model.add(TimeDistributed(Dropout(0.5)))
 
 # 5th layer group
 
@@ -222,7 +222,7 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
 
-model.add(TimeDistributed(Dropout(0.5)))
+#model.add(TimeDistributed(Dropout(0.5)))
 
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
