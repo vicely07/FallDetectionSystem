@@ -28,7 +28,7 @@ def save_history(history):
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
 from keras.models import Sequential
-from keras.losses import categorical_crossentropy
+from keras.losses import sparse_categorical_crossentropy
 from keras.optimizers import Adam
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
@@ -71,7 +71,7 @@ model.add(Dropout(0.5))
 
 model.add(Flatten())
 model.add(Dense(11, activation='softmax'))
-model.compile(loss=categorical_crossentropy, optimizer=Adam(), metrics=['accuracy'])
+model.compile(loss=sparse_categorical_crossentropy, optimizer=Adam(), metrics=['accuracy'])
 model.summary()
 '''
 #----------------------------------------------------------Load parameter-------------------------------------------------------
