@@ -279,7 +279,8 @@ model.add(AttentionLSTM(recurrent.LSTM(24, return_sequences=True, consume_less='
 
 model.add(TimeDistributed(Dense(487, activation='softmax')))
 #sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+#model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(loss='mean_squared_error', optimizer='sgd')
 
 model.summary()
 
@@ -304,7 +305,7 @@ vid = np.array(vid, dtype=np.float32)
 
 X = (vid[2000:2016, 8:120, 30:142, :].transpose((3, 0, 1, 2)))
 X = np.array([X])
-output = np.append([5248, 1], X.shape)
+output = np.append([1], [1], X.shape)
 
 #output = output.transpose((1,0,2,3,4))
 
