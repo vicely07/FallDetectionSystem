@@ -307,8 +307,6 @@ X = np.array([X])
 output = np.append(1, X.shape)
 output = output.transpose((1,0,2,3,4))
 
-X = np.reshape(None, 16, 112, 112, 3)
-
 output = model.predict_on_batch(X)
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
