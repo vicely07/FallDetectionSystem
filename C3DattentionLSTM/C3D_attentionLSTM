@@ -322,9 +322,9 @@ from keras.models import Sequential
 
 from keras.utils import multi_gpu_model
 
-from keras.layers import Dense, TimeDistributed, Flatten, Dropout
+from keras.layers import Dense, TimeDistributed, Flatten, Dropout, LSTM
 
-from keras.layers.convolutional import Convolution3D, MaxPooling3D, LSTM
+from keras.layers.convolutional import Convolution3D, MaxPooling3D
 
 from keras import optimizers
 
