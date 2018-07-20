@@ -1,4 +1,4 @@
-'''
+
 import numpy
 
 train_d = numpy.load('train_data.npy')
@@ -23,7 +23,7 @@ def save_history(history):
         for i in range(nb_epoch):
             fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
-'''
+
 #---------------------------------------------3DCNN model---------------------------------------------------------------
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
