@@ -316,7 +316,7 @@ print(X.shape)
 output = X.reshape((-1, 1, 16, 112, 112, 3))
 print(output.shape)
 print(output[0].shape)
-#output = model.predict_on_batch(X)
+output = model.predict_on_batch(X)
 '''
 print('Position of maximum probability: {}'.format(output[0].argmax()))
 print('Maximum probability: {:.5f}'.format(max(output[0][0])))
