@@ -1,4 +1,4 @@
-
+'''
 import numpy
 
 train_d = numpy.load('train_data.npy')
@@ -23,7 +23,7 @@ def save_history(history):
         for i in range(nb_epoch):
             fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
-
+'''
 #---------------------------------------------3DCNN model---------------------------------------------------------------
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
@@ -35,10 +35,10 @@ from keras.layers.convolutional import Convolution3D, MaxPooling3D
 # Define model
 model = Sequential()
 from numpy import array
-input_shape=(16, 112, 112, 3) # l, h, w, c
+#input_shape=(16, 112, 112, 3) # l, h, w, c
 #input_shape=(3, 16, 112, 112) # c, l, h, w
 
-model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1', input_shape=input_shape))
+model.add(Convolution3D(64, 3, 3, 3, activation='relu', border_mode='same', name='conv1', input_shape=(train_d.shape[1:])))
 model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), border_mode='valid', name='pool1'))
 model.add(Dropout(0.5))
 
