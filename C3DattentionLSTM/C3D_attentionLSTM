@@ -324,7 +324,7 @@ from keras.utils import multi_gpu_model
 
 from keras.layers import Dense, TimeDistributed, Flatten, Dropout
 
-from keras.layers.convolutional import Convolution3D, MaxPooling3D
+from keras.layers.convolutional import Convolution3D, MaxPooling3D, LSTM
 
 from keras import optimizers
 
@@ -445,7 +445,7 @@ model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
 
 model.add(TimeDistributed(Flatten()))
-model.add(recurrent.LSTM(24, return_sequences=True)) #consume_less='gpu'))
+model.add(LSTM(24, return_sequences=True)) #consume_less='gpu'))
 model.add(AttentionWithContext())
 
 model.add(TimeDistributed(Dense(487, activation='softmax')))
