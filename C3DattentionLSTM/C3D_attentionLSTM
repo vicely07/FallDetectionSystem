@@ -152,6 +152,8 @@ class AttentionLSTM(Wrapper):
 #---------------------------------------3d CNN model--------------------------------------------------------------
 from keras.models import Sequential
 
+from keras.utils import multi_gpu_model
+
 from keras.layers import Dense, TimeDistributed, Flatten, Dropout
 
 from keras.layers.convolutional import Convolution3D, MaxPooling3D
@@ -280,7 +282,10 @@ model.add(AttentionLSTM(recurrent.LSTM(24, return_sequences=True, consume_less='
 model.add(TimeDistributed(Dense(487, activation='softmax')))
 #sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
 #model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-model.compile(loss='mean_squared_error', optimizer='sgd')
+parallel_model = multi_gpu_model(model, gpus=8)
+parallel_model.compile(loss='categorical_crossentropy',
+                       optimizer='adam')
+
 
 model.summary()
 
