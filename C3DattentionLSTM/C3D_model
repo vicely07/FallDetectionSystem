@@ -82,7 +82,6 @@ import caffe_pb2 as caffe
 import numpy as np
 
 
-
 p = caffe.NetParameter()
 
 p.ParseFromString(
@@ -158,24 +157,24 @@ json_string = model.to_json()
 with open('sports1M_model.json', 'w') as f:
 
     f.write(json_string)
-
+'''
 #------------------------------------------------------Loading UCF11 data--------------------------------------------------------------------------
 
 history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130,epochs=100, verbose=1, shuffle=True)
 plot_history(history)
 save_history(history)
-'''
+
 #model.evaluate(test_d, test_l, verbose=1)
 model_json = model.to_json()
    
 with open( 'ucf101_3dcnnmodel.json', 'w') as json_file:
     json_file.write(model_json)
 model.save_weights( 'ucf101_3dcnnmodel.hd5')
-'''
+
 loss, acc = model.evaluate(test_d, test_l, verbose=1)
 print('Test loss:', loss)
 print('Test accuracy:', acc)
-
+'''
 #-------------------------------------------------------Load data-------------------------------------------------------------------------
 
 from keras import applications
