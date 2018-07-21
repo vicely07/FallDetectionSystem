@@ -79,7 +79,7 @@ model.summary()
 
 import caffe_pb2 as caffe
 
-import numpy as np
+
 
 
 p = caffe.NetParameter()
@@ -91,7 +91,7 @@ p.ParseFromString(
 )
 
 '''
-
+import numpy as np
 def rot90(W):
 
     for i in range(W.shape[0]):
