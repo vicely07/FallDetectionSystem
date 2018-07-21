@@ -70,8 +70,8 @@ model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', nam
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
 model.add(Dropout(0.5))
 
-#model.add(Flatten())
-#model.add(Dense(11, activation='softmax'))
+model.add(Flatten())
+model.add(Dense(11, activation='softmax'))
 model.compile(loss=sparse_categorical_crossentropy, optimizer=Adam(), metrics=['accuracy'])
 model.summary()
 '''
@@ -90,7 +90,7 @@ p.ParseFromString(
 
 )
 
-
+'''
 
 def rot90(W):
 
@@ -150,14 +150,14 @@ import h5py
 
 
 
-model.save_weights('sports1M_weights.h5', overwrite=True)
+model.save_weights('UCF11_weights.h5', overwrite=True)
 
 json_string = model.to_json()
 
-with open('sports1M_model.json', 'w') as f:
+with open('UCF11_model.json', 'w') as f:
 
     f.write(json_string)
-'''
+
 #------------------------------------------------------Loading UCF11 data--------------------------------------------------------------------------
 
 history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130,epochs=100, verbose=1, shuffle=True)
