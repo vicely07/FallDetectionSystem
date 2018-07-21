@@ -502,8 +502,8 @@ output = model.predict_on_batch(output)
 
 
 print('Position of maximum probability: {}'.format(output[0].argmax()))
-print('Maximum probability:', max(output[0][0]))
+
 #print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(labels[output[0].argmax()]))
-
+print('Maximum probability:', max(output[0][0]))
 
