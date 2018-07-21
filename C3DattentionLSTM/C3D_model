@@ -116,7 +116,7 @@ conv_layers_indx = [1, 4, 7, 9, 12, 14, 17, 19]
 
 for i in conv_layers_indx:
 
-    layer = p.layers[i]
+    layer = model.layers[i]
 
     weights_b = np.array(layer.blobs[1].data, dtype=np.float32)
 
