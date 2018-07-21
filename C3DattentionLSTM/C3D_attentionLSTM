@@ -392,13 +392,11 @@ model.add(TimeDistributed(Convolution3D(512, 3, 3, 3, activation='relu', border_
 
 model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5')))
 
-
-'''
 model.add(TimeDistributed(Flatten()))
 model.add(TimeDistributed(Dropout(0.5)))
 model.add(LSTM(24, return_sequences=True)) #consume_less='gpu'))
 #model.add(AttentionWithContext())
-'''
+
 model.add(Dense(487, activation='softmax'))
 
 
@@ -450,13 +448,14 @@ from keras.models import model_from_json
 
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
-
+'''
 model.add(TimeDistributed(Flatten()))
 model.add(LSTM(24, return_sequences=True)) #consume_less='gpu'))
 model.add(AttentionWithContext())
 
 model.add(Dense(487, activation='softmax'))
 #sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
+'''
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 '''
 parallel_model = multi_gpu_model(model, gpus=2)
