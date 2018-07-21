@@ -70,9 +70,9 @@ model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', nam
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
 model.add(Dropout(0.5))
 
-model.add(Flatten())
-model.add(Dense(11, activation='softmax'))
-model.compile(loss=sparse_categorical_crossentropy, optimizer=Adam(), metrics=['accuracy'])
+#model.add(Flatten())
+#model.add(Dense(11, activation='softmax'))
+#model.compile(loss=sparse_categorical_crossentropy, optimizer=Adam(), metrics=['accuracy'])
 model.summary()
 '''
 #----------------------------------------------------------Load parameter-------------------------------------------------------
@@ -160,21 +160,22 @@ with open('sports1M_model.json', 'w') as f:
     f.write(json_string)
 
 #------------------------------------------------------Loading UCF11 data--------------------------------------------------------------------------
-'''
+
 history = model.fit(train_d, train_l, validation_data=(test_d, test_l), batch_size=130,epochs=100, verbose=1, shuffle=True)
 plot_history(history)
 save_history(history)
+'''
 #model.evaluate(test_d, test_l, verbose=1)
 model_json = model.to_json()
    
 with open( 'ucf101_3dcnnmodel.json', 'w') as json_file:
     json_file.write(model_json)
 model.save_weights( 'ucf101_3dcnnmodel.hd5')
-
+'''
 loss, acc = model.evaluate(test_d, test_l, verbose=1)
 print('Test loss:', loss)
 print('Test accuracy:', acc)
-'''
+
 #-------------------------------------------------------Load data-------------------------------------------------------------------------
 
 from keras import applications
