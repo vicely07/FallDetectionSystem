@@ -395,7 +395,7 @@ model.add(TimeDistributed(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), b
 model.add(TimeDistributed(Flatten()))
 model.add(TimeDistributed(Dropout(0.5)))
 model.add(LSTM(24, return_sequences=True)) #consume_less='gpu'))
-#model.add(AttentionWithContext())
+model.add(AttentionWithContext())
 
 model.add(Dense(487, activation='softmax'))
 
@@ -501,8 +501,6 @@ output = model.predict_on_batch(output)
 
 
 print('Position of maximum probability: {}'.format(output[0].argmax()))
-
-#print('Maximum probability: {:.5f}'.format(max(output[0][0])))
+print('Maximum probability: {:.5f}'.format(max(output[0][0])))
 print('Corresponding label: {}'.format(labels[output[0].argmax()]))
-print('Maximum probability:', max(output[0]))
 
