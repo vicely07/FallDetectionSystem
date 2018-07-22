@@ -448,11 +448,11 @@ from keras.models import model_from_json
 
 model = model_from_json(open('sports1M_model.json', 'r').read())
 model.load_weights('sports1M_weights.h5')
-model.add(AttentionWithContext())
+#model.add(AttentionWithContext())
 
-model.add(Dense(487, activation='softmax'))
+#model.add(Dense(487, activation='softmax'))
 #sgd = optimizers.SGD(lr=0.003, decay=150000, momentum=0.5, nesterov=True)
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 #parallel_model = multi_gpu_model(model, gpus=2)
 #parallel_model.compile(loss='categorical_crossentropy', optimizer='adam')
