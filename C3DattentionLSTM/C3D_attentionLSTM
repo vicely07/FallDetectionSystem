@@ -397,7 +397,7 @@ model.add(TimeDistributed(Dropout(.5)))
 model.add(TimeDistributed(Dense(4096, activation='relu', name='fc7')))
 model.add(TimeDistributed(Dropout(0.5)))
 model.add(LSTM(24, return_sequences=True)) #consume_less='gpu'))
-#model.add(Dense(487, activation='softmax'))
+model.add(Dense(487, activation='softmax'))
 
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
