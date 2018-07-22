@@ -457,8 +457,7 @@ model.add(Dense(487, activation='softmax'))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 #parallel_model = multi_gpu_model(model, gpus=2)
-#parallel_model.compile(loss='categorical_crossentropy',
-                       optimizer='adam')
+#parallel_model.compile(loss='categorical_crossentropy', optimizer='adam')
 
 model.summary()
 
