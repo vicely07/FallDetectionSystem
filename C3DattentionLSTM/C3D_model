@@ -1,4 +1,4 @@
-
+'''
 import numpy
 
 train_d = numpy.load('train_data.npy')
@@ -24,7 +24,7 @@ def save_history(history):
         for i in range(nb_epoch):
             fp.write('{}\t{}\t{}\t{}\t{}\n'.format(
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
-
+'''
 #---------------------------------------------3DCNN model---------------------------------------------------------------
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
@@ -70,11 +70,8 @@ model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', nam
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
 model.add(Dropout(0.5))
 
-model.add(Flatten())
-model.add(Dense(11, activation='softmax'))
-model.compile(loss=sparse_categorical_crossentropy, optimizer=Adam(), metrics=['accuracy'])
 model.summary()
-'''
+
 #----------------------------------------------------------Load parameter-------------------------------------------------------
 
 import caffe_pb2 as caffe
@@ -145,16 +142,16 @@ for i, j in zip(model_layers_indx, range(11)):
     model.layers[i].set_weights(params[j])
 
 
-'''
+
 import h5py
 
 
 
-model.save_weights('UCF11_weights.h5', overwrite=True)
+model.save_weights('sports1M_weights.h5', overwrite=True)
 
 json_string = model.to_json()
 
-with open('UCF11_model.json', 'w') as f:
+with open('sports1M_model.json', 'w') as f:
 
     f.write(json_string)
 '''
@@ -225,10 +222,12 @@ def load_C3D_model():
   y_lable = None
   batch = 0
   for x,y in train_generator:
+      '''
       if batch == (56021/batch_size):
           break
       print("predict on batch:",batch)
       batch+=1
+      '''
       if x_generator==None:
          x_generator = base_model.predict_on_batch(x)
          y_lable = y
@@ -245,10 +244,12 @@ def load_C3D_model():
   x_generator = None
   y_lable = None
   for x,y in validation_generator:
+      '''
       if batch == (3974/batch_size):
           break
       print("predict on batch validate:",batch)
       batch+=1
+      '''
       if x_generator==None:
          x_generator = base_model.predict_on_batch(x)
          y_lable = y
@@ -261,4 +262,3 @@ def load_C3D_model():
   
 train_generator,validation_generator = bring_data_from_directory()  
 load_C3D_model()
-'''
