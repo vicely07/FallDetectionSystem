@@ -245,7 +245,7 @@ class Attention(Layer):
         else:
 
             return input_shape[0], input_shape[-1]
-'''
+
 #---------------------------------------3d CNN model--------------------------------------------------------------
 from keras.models import Sequential
 
