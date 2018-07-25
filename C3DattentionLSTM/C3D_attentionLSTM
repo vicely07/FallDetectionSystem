@@ -1,4 +1,4 @@
-
+'''
 #---------------------------------------Creating attention model-----------------------------------------------------------------
 from keras import backend as K
 from keras.engine.topology import Layer
@@ -167,7 +167,7 @@ class AttentionWithContext(Layer):
 
         return (input_shape[0], input_shape[-1],)
 #--------------------------------------------unused layer------------------------------------------------------------------------
-'''
+
 from keras import backend as K
 from keras.engine import InputSpec
 from keras.layers import LSTM, activations, Wrapper, Recurrent, recurrent
