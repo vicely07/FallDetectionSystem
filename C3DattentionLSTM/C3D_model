@@ -70,6 +70,13 @@ model.add(Convolution3D(512, 3, 3, 3, activation='relu', border_mode='same', nam
 model.add(MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1), border_mode='valid', name='pool5'))
 model.add(Dropout(0.5))
 
+#LSTM
+model.add(AttentionLSTM(units=24, return_sequences=False, input_shape=(None, self.num_input_tokens), dropout=0.5))
+model.add(Dense(512, activation='relu'))
+model.add(Dense(self.nb_classes))
+model.add(Activation('softmax'))
+model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+
 model.summary()
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
