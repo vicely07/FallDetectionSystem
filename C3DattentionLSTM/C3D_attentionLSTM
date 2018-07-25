@@ -327,7 +327,7 @@ model.add(Attention())
 model.add(Dropout(0.5))
 model.add(Dense(512, activation='relu'))
 model.add(Activation('softmax'))
-
+model.summary()
 
 #----------------------------------------------------------Load parameter-------------------------------------------------------
 import caffe_pb2 as caffe
